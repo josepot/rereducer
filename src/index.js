@@ -20,7 +20,7 @@ const getMatcher = (pattern) => {
 export default (...args) => {
   const watchers = args.map(([ pattern ]) => getMatcher(pattern));
 
-  return initialState => (state = initialState, action) => {
+  return initialState => (state = initialState, action = {}) => {
     const winnerIdx = watchers.findIndex(watcher => watcher(action, state));
 
     return winnerIdx > -1 ?
