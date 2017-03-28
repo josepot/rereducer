@@ -17,7 +17,7 @@ const getMatcher = (pattern) => {
   );
 };
 
-export default (...args) => {
+module.exports = (...args) => {
   const watchers = args.map(([ pattern ]) => getMatcher(pattern));
 
   return initialState => (state = initialState, action = {}) => {
