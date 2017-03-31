@@ -65,3 +65,6 @@ counter(11, { type: 'SOMETHING_SPECIAL' });
 // => 11
 ```
 
+### Credits to:
+
+- @winkerVSbecks: For helping me shape the API
