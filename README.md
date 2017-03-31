@@ -67,4 +67,4 @@ counter(11, { type: 'SOMETHING_SPECIAL' });
 
 ### Credits to:
 
-- @winkerVSbecks: For helping me shape the API
+- [@winkerVSbecks](https://github.com/winkerVSbecks): For sharing good ideas and feedback about the API
