@@ -1,30 +1,50 @@
+import invariant from 'invariant';
+
 const getMatcher = (pattern) => {
   const patternType = typeof pattern;
   if (patternType === 'string') return ({ type }) => type === pattern;
   if (patternType === 'function') return pattern;
-  if (Array.isArray(pattern)) {
-    return (action, state) => {
-      let val;
-      for (let i = 0; !val && i < pattern.length; i += 1) {
-        val = getMatcher(pattern[i])(action, state);
-      }
-      return val;
-    };
-  }
 
-  throw new Error(
-    `Watcher pattern was expected to be a string, a function or an Array of patterns, instead it received ${patternType}`
-  );
+  // It has to be an Array
+  const matchers = pattern.map(getMatcher);
+  return (action, state) => (matchers.findIndex(m => m(action, state)) > -1);
 };
 
+const isValidPattern = pattern => {
+  if (['string', 'function'].indexOf(typeof pattern) > -1) return true;
+  if (Array.isArray(pattern)) {
+    return pattern.length === pattern.filter(isValidPattern).length;
+  }
+  return false;
+};
+
+const validateArguments = args => args.forEach(arg => {
+  invariant(Array.isArray(arg), `Expected an Array instead it received ${typeof arg}`);
+  invariant(arg.length === 2, `The array should have a length of 2, instead it had a length of ${arg.length}`);
+
+  const [pattern, transformation] = arg;
+  invariant(isValidPattern(pattern), 'The first entry of the Array is supposed to be a valid pattern: a string, a function or an Array of valid patterns.');
+  invariant(typeof transformation === 'function', 'The second entry of the Array is supposed to be a function');
+});
+
+const isLastArgumentInitialValue = lastArgument => !(
+  Array.isArray(lastArgument) && lastArgument.length === 2 &&
+  typeof lastArgument[1] === 'function' && isValidPattern(lastArgument[0])
+);
+
 module.exports = (...args) => {
-  const watchers = args.map(([ pattern ]) => getMatcher(pattern));
+  const [lastArgument] = args.slice(-1);
+  const [initialValue, pairs] = isLastArgumentInitialValue(lastArgument) ?
+    [lastArgument, args.slice(0, -1)] :
+    [undefined, args];
 
-  return initialState => (state = initialState, action = {}) => {
+  validateArguments(pairs);
+  const watchers = pairs.map(([ pattern ]) => getMatcher(pattern));
+  const getReducer = initialState => (state = initialState, action = {}) => {
     const winnerIdx = watchers.findIndex(watcher => watcher(action, state));
-
     return winnerIdx > -1 ?
-      args[winnerIdx][1](state, action) :
+      pairs[winnerIdx][1](state, action) :
       state;
   };
+  return initialValue === undefined ? getReducer : getReducer(initialValue);
 };

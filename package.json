@@ -1,6 +1,6 @@
 {
   "name": "rereducer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./lib/index.js",
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
@@ -12,7 +12,9 @@
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "clean": "rimraf lib dist es",
     "lint": "eslint src",
-    "prepublish": "npm run clean && npm run build"
+    "prepublish": "npm run clean && npm run build",
+    "test": "cross-env BABEL_ENV=commonjs NODE_ENV=test mocha --compilers js:babel-register --recursive",
+    "test:watch": "npm test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -50,7 +52,12 @@
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
+    "expect": "^1.20.2",
+    "mocha": "^3.2.0",
     "rimraf": "^2.6.1",
     "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "invariant": "^2.2.2"
   }
 }
