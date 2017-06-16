@@ -1,5 +1,10 @@
 import invariant from 'invariant';
 
+const findIndex = (array, fn) => {
+  for (let i = 0; i < array.length; i++) if (fn(array[i], i, array)) return i;
+  return -1;
+}
+
 const getMatcher = (pattern) => {
   const patternType = typeof pattern;
   if (patternType === 'string') return ({ type }) => type === pattern;
@@ -7,7 +12,7 @@ const getMatcher = (pattern) => {
 
   // It has to be an Array
   const matchers = pattern.map(getMatcher);
-  return (action, state) => (matchers.findIndex(m => m(action, state)) > -1);
+  return (action, state) => (findIndex(matchers, m => m(action, state)) > -1);
 };
 
 const isValidPattern = pattern => {
@@ -41,7 +46,7 @@ module.exports = (...args) => {
   validateArguments(pairs);
   const watchers = pairs.map(([ pattern ]) => getMatcher(pattern));
   const getReducer = initialState => (state = initialState, action = {}) => {
-    const winnerIdx = watchers.findIndex(watcher => watcher(action, state));
+    const winnerIdx = findIndex(watchers, watcher => watcher(action, state));
     return winnerIdx > -1 ?
       pairs[winnerIdx][1](state, action) :
       state;
