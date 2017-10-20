@@ -37,7 +37,7 @@ const isLastArgumentInitialValue = lastArgument => !(
   typeof lastArgument[1] === 'function' && isValidPattern(lastArgument[0])
 );
 
-module.exports = (...args) => {
+export default (...args) => {
   const [lastArgument] = args.slice(-1);
   const [initialValue, pairs] = isLastArgumentInitialValue(lastArgument) ?
     [lastArgument, args.slice(0, -1)] :
@@ -53,3 +53,5 @@ module.exports = (...args) => {
   };
   return initialValue === undefined ? getReducer : getReducer(initialValue);
 };
+
+export const getPayload = (state, {payload}) => payload;

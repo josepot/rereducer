@@ -1,5 +1,5 @@
 import expect from 'expect';
-import rereducer from '../src/';
+import rereducer, {getPayload} from '../src/';
 
 describe('Rereducer', () => {
   describe('patterns', () => {
@@ -63,13 +63,23 @@ describe('Rereducer', () => {
   });
 
   describe('arguments assertion', () => {
-    it('should trhow for bad arguments', () => {
+    it('should throw for bad arguments', () => {
       const initialState = 0;
       expect(() => rereducer(23, initialstate)).toThrow();
       expect(() => rereducer([, 1], initialstate)).toThrow();
       expect(() => rereducer([[], 1], initialstate)).toThrow();
       expect(() => rereducer(['asd', 1], initialstate)).toThrow();
       expect(() => rereducer(['asd', null], initialstate)).toThrow();
+    });
+  });
+
+  describe('getPayload', () => {
+    it('should return the action\'s payload', () => {
+      const initialstate = 0;
+      const payload = 10;
+      const reducer = rereducer(['TEST', getPayload], initialstate);
+
+      expect(reducer(initialstate, {type: 'TEST', payload})).toEqual(payload);
     });
   });
 });
