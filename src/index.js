@@ -32,15 +32,15 @@ const validateArguments = args => args.forEach(arg => {
   invariant(typeof transformation === 'function', 'The second entry of the Array is supposed to be a function');
 });
 
-const isLastArgumentInitialValue = lastArgument => !(
-  Array.isArray(lastArgument) && lastArgument.length === 2 &&
-  typeof lastArgument[1] === 'function' && isValidPattern(lastArgument[0])
+const isArgumentInitialValue = argument => !(
+  Array.isArray(argument) && argument.length === 2 &&
+  typeof argument[1] === 'function' && isValidPattern(argument[0])
 );
 
 export default (...args) => {
-  const [lastArgument] = args.slice(-1);
-  const [initialValue, pairs] = isLastArgumentInitialValue(lastArgument) ?
-    [lastArgument, args.slice(0, -1)] :
+  const [firstArgument] = args;
+  const [initialValue, pairs] = isArgumentInitialValue(firstArgument) ?
+    [firstArgument, args.slice(1)] :
     [undefined, args];
 
   validateArguments(pairs);

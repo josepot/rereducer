@@ -5,9 +5,9 @@ describe('Rereducer', () => {
   describe('patterns', () => {
     it('should accept string patterns', () => {
       const reducer = rereducer(
+        0,
         ['INCREASE', x => x + 1],
-        ['DECREASE', x => x - 1],
-        0
+        ['DECREASE', x => x - 1]
       );
       expect(reducer()).toEqual(0);
       expect(reducer(0, { type: 'INCREASE' })).toEqual(1);
@@ -19,8 +19,8 @@ describe('Rereducer', () => {
         type === 'INCREASE' && typeof factor === 'number'
       );
       const reducer = rereducer(
-        [whenIncreaseByFactor, (x, { factor }) => x + factor],
-        0
+        0,
+        [whenIncreaseByFactor, (x, { factor }) => x + factor]
       );
       expect(reducer()).toEqual(0);
       expect(reducer(0, { type: 'INCREASE' })).toEqual(0);
@@ -37,8 +37,8 @@ describe('Rereducer', () => {
 
       const initialstate = { test: 'test' };
       const reducer = rereducer(
-        [whenItsTimeToReset, () => null],
-        initialstate
+        initialstate,
+        [whenItsTimeToReset, () => null]
       );
 
       expect(reducer()).toEqual(initialstate);
@@ -65,11 +65,11 @@ describe('Rereducer', () => {
   describe('arguments assertion', () => {
     it('should throw for bad arguments', () => {
       const initialState = 0;
-      expect(() => rereducer(23, initialstate)).toThrow();
-      expect(() => rereducer([, 1], initialstate)).toThrow();
-      expect(() => rereducer([[], 1], initialstate)).toThrow();
-      expect(() => rereducer(['asd', 1], initialstate)).toThrow();
-      expect(() => rereducer(['asd', null], initialstate)).toThrow();
+      expect(() => rereducer(initialstate, 23)).toThrow();
+      expect(() => rereducer(initialstate, [, 1])).toThrow();
+      expect(() => rereducer(initialstate, [[], 1])).toThrow();
+      expect(() => rereducer(initialstate, ['asd', 1])).toThrow();
+      expect(() => rereducer(initialstate, ['asd', null])).toThrow();
     });
   });
 
@@ -77,7 +77,7 @@ describe('Rereducer', () => {
     it('should return the action\'s payload', () => {
       const initialstate = 0;
       const payload = 10;
-      const reducer = rereducer(['TEST', getPayload], initialstate);
+      const reducer = rereducer(initialstate, ['TEST', getPayload]);
 
       expect(reducer(initialstate, {type: 'TEST', payload})).toEqual(payload);
     });

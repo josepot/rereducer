@@ -8,9 +8,9 @@ import rereducer from 'rereducer';
 const INITIAL_COUNTER_STATE = 0;
 
 const counter = rereducer(
+  INITIAL_COUNTER_STATE,
   ['INCREASE', x => x + 1],
-  ['DECREASE', x => x - 1],
-  INITIAL_COUNTER_STATE
+  ['DECREASE', x => x - 1]
 );
 
 counter();
@@ -26,10 +26,10 @@ import rereducer from 'rereducer';
 const INITIAL_COUNTER_STATE = 0;
 
 const counter = rereducer(
+  INITIAL_COUNTER_STATE,
   ['INCREASE', x => x + 1],
   ['DECREASE', x => x - 1],
-  [['RESET', 'LOGOUT'], () => INITIAL_COUNTER_STATE],
-  INITIAL_COUNTER_STATE
+  [['RESET', 'LOGOUT'], () => INITIAL_COUNTER_STATE]
 );
 
 counter(100, { type: 'RESET' });
@@ -51,10 +51,10 @@ const whenSomethingSpeciallHappens = (action, state) => (
 );
 
 const counter = rereducer(
+  INITIAL_COUNTER_STATE,
   ['INCREASE', x => x + 1],
   ['DECREASE', x => x - 1],
-  [whenSomethingSpeciallHappens, x => x + 1000],
-  INITIAL_COUNTER_STATE
+  [whenSomethingSpeciallHappens, x => x + 1000]
 );
 
 counter(11, { type: 'SOMETHING_SPECIAL', payload: 'SPECIAL_INDEED' });
