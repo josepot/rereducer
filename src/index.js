@@ -45,10 +45,10 @@ export default (...args) => {
 
   validateArguments(pairs);
   const watchers = pairs.map(([ pattern ]) => getMatcher(pattern));
-  const getReducer = initialState => (state = initialState, action = {}) => {
+  const getReducer = initialState => (state = initialState, action = {}, ...others) => {
     const winnerIdx = findIndex(watchers, watcher => watcher(action, state));
     return winnerIdx > -1 ?
-      pairs[winnerIdx][1](state, action) :
+      pairs[winnerIdx][1](state, action, ...others) :
       state;
   };
   return initialValue === undefined ? getReducer : getReducer(initialValue);

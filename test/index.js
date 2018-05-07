@@ -62,6 +62,15 @@ describe('Rereducer', () => {
     });
   });
 
+  describe('other args propagation', () => {
+    it('if other arguments are passed to the reducer, they should be used', () => {
+      const subReducer = (state, action, otherState = 0) => state + otherState;
+      const reducer = rereducer(0, ['TEST', subReducer]);
+
+      expect(reducer(10, {type: 'TEST'}, 100)).toEqual(110);
+    });
+  });
+
   describe('arguments assertion', () => {
     it('should throw for bad arguments', () => {
       const initialState = 0;
