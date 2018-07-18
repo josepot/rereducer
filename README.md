@@ -44,7 +44,7 @@ What if you need a more complex condition for a transformation?
 import rereducer from 'rereducer';
 const INITIAL_COUNTER_STATE = 0;
 
-const whenSomethingSpeciallHappens = (action, state) => (
+const whenSomethingSpeciallHappens = (state, action) => (
   action.type === 'SOMETHING_SPECIAL' &&
   action.payload === 'SPECIAL_INDEED' &&
   state > 10

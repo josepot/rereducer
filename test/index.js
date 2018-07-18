@@ -15,7 +15,7 @@ describe('Rereducer', () => {
     });
 
     it('should accept function patterns', () => {
-      const whenIncreaseByFactor = ({ type, factor }) => (
+      const whenIncreaseByFactor = (state, { type, factor }) => (
         type === 'INCREASE' && typeof factor === 'number'
       );
       const reducer = rereducer(
@@ -32,7 +32,7 @@ describe('Rereducer', () => {
       const whenItsTimeToReset = [
         'LOGOUT',
         'RESET',
-        ({ type, error }) => (type === 'REQUEST_COMPLETED' && error !== undefined)
+        (state, { type, error }) => (type === 'REQUEST_COMPLETED' && error !== undefined)
       ];
 
       const initialstate = { test: 'test' };

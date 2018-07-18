@@ -7,12 +7,12 @@ const findIndex = (array, fn) => {
 
 const getMatcher = (pattern) => {
   const patternType = typeof pattern;
-  if (patternType === 'string') return ({ type }) => type === pattern;
+  if (patternType === 'string') return (x, { type }) => type === pattern;
   if (patternType === 'function') return pattern;
 
   // It has to be an Array
   const matchers = pattern.map(getMatcher);
-  return (action, state) => (findIndex(matchers, m => m(action, state)) > -1);
+  return (...args) => (findIndex(matchers, m => m(...args)) > -1);
 };
 
 const isValidPattern = pattern => {
@@ -46,7 +46,7 @@ export default (...args) => {
   validateArguments(pairs);
   const watchers = pairs.map(([ pattern ]) => getMatcher(pattern));
   const getReducer = initialState => (state = initialState, action = {}, ...others) => {
-    const winnerIdx = findIndex(watchers, watcher => watcher(action, state));
+    const winnerIdx = findIndex(watchers, watcher => watcher(state, action, ...others));
     return winnerIdx > -1 ?
       pairs[winnerIdx][1](state, action, ...others) :
       state;
