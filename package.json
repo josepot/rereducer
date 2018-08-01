@@ -1,63 +1,89 @@
 {
   "name": "rereducer",
-  "version": "2.0.0",
-  "main": "./lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
-  "scripts": {
-    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
-    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/rereducer.js",
-    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/rereducer.min.js",
-    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "clean": "rimraf lib dist es",
-    "lint": "eslint src",
-    "prepublish": "npm run clean && npm run build",
-    "test": "cross-env BABEL_ENV=commonjs NODE_ENV=test mocha --compilers js:babel-register --recursive",
-    "test:watch": "npm test -- --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/josepot/rereducer.git"
-  },
-  "files": [
-    "dist",
-    "lib",
-    "src",
-    "es"
-  ],
+  "version": "2.1.0",
+  "license": "MIT",
+  "repository": "github:josepot/rereducer",
+  "bugs": "https://github.com/josepot/rereducer/issues",
   "keywords": [
     "redux",
     "reducer",
+    "enhancers",
     "boilerplate",
-    "declarative",
-    "watchers"
+    "functional",
+    "declarative"
   ],
   "author": "Josep M Sobrepere (https://github.com/josepot)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/josepot/rereducer/issues"
-  },
-  "homepage": "https://github.com/josepot/rereducer",
-  "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-core": "^6.23.1",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^6.4.0",
-    "babel-plugin-transform-exponentiation-operator": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-runtime": "^6.23.0",
-    "cross-env": "^3.2.3",
-    "eslint": "^3.17.1",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "expect": "^1.20.2",
-    "mocha": "^3.2.0",
-    "rimraf": "^2.6.1",
-    "webpack": "^2.2.1"
+  "main": "lib/rereducer.js",
+  "unpkg": "dist/rereducer.js",
+  "module": "es/rereducer.js",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rimraf lib dist es coverage",
+    "format": "prettier --write \"{src,test}/**/*.js\"",
+    "format:check": "prettier --list-different \"{src,test}/**/*.js\"",
+    "lint": "eslint src test build",
+    "pretest": "npm run build:commonjs",
+    "test": "cross-env BABEL_ENV=commonjs jest",
+    "test:watch": "npm test -- --watch",
+    "test:cov": "npm test -- --coverage",
+    "build:commonjs": "cross-env NODE_ENV=cjs rollup -c -o lib/rereducer.js",
+    "build:es": "cross-env BABEL_ENV=es NODE_ENV=es rollup -c -o es/rereducer.js",
+    "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -o dist/rereducer.js",
+    "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -o dist/rereducer.min.js",
+    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "prepare": "npm run clean && npm run format:check && npm run lint && npm test && npm run build"
   },
   "dependencies": {
-    "invariant": "^2.2.2"
-  }
+    "loose-envify": "^1.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.46.2",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "glob": "^7.1.1",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.58.0",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^3.0.0"
+  },
+  "npmName": "rereducer",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "browserify": {
+    "transform": [
+      "loose-envify"
+    ]
+  },
+  "jest": {
+    "testRegex": "(/test/.*\\.spec.js)$",
+    "testURL": "http://localhost/"
+  },
+  "sideEffects": false
 }

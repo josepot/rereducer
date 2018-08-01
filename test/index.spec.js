@@ -57,7 +57,7 @@ describe('Rereducer', () => {
       const initialValue = 5
       const sillyReducer = rereducer(['INCREASE', x => x + 1])
 
-      expect(sillyReducer(initialValue)).toBeA('function')
+      expect(typeof sillyReducer(initialValue)).toBe('function')
       expect(sillyReducer(initialValue)()).toEqual(initialValue)
       expect(
         sillyReducer(initialValue)(initialValue, { type: 'INCREASE' })
@@ -76,12 +76,12 @@ describe('Rereducer', () => {
 
   describe('arguments assertion', () => {
     it('should throw for bad arguments', () => {
-      const initialstate = 0
-      expect(() => rereducer(initialstate, 23)).toThrow()
-      expect(() => rereducer(initialstate, [undefined, 1])).toThrow()
-      expect(() => rereducer(initialstate, [[], 1])).toThrow()
-      expect(() => rereducer(initialstate, ['asd', 1])).toThrow()
-      expect(() => rereducer(initialstate, ['asd', null])).toThrow()
+      const initialState = 0
+      expect(() => rereducer(initialState, 23)).toThrow()
+      expect(() => rereducer(initialState, [undefined, 1])).toThrow()
+      expect(() => rereducer(initialState, [[], 1])).toThrow()
+      expect(() => rereducer(initialState, ['asd', 1])).toThrow()
+      expect(() => rereducer(initialState, ['asd', null])).toThrow()
     })
   })
 
