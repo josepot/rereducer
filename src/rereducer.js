@@ -1,13 +1,16 @@
-import err from './utils/err'
+import { err, flagMemoized, registerExternalReducer } from './utils/index'
+import isType from './isType'
 
 const getMatcher = pattern => {
   const patternType = typeof pattern
-  if (patternType === 'string') return (x, { type }) => type === pattern
-  if (patternType === 'function') return pattern
+  if (patternType === 'string') return isType(pattern)
+  if (patternType === 'function') return registerExternalReducer(pattern)
 
   // It has to be an Array
   const matchers = pattern.map(getMatcher)
-  return (...args) => matchers.find(m => m(...args)) !== undefined
+  return function() {
+    return matchers.find(m => m.apply(null, arguments)) !== undefined
+  }
 }
 
 const isValidPattern = pattern => {
@@ -56,17 +59,14 @@ export default (...args) => {
   }
   const watchers = pairs.map(([pattern, reducer]) => [
     getMatcher(pattern),
-    reducer
+    registerExternalReducer(reducer)
   ])
-  const getReducer = initialState => (
-    state = initialState,
-    action = {},
-    ...others
-  ) => {
-    const winner = watchers.find(([watcher]) =>
-      watcher(state, action, ...others)
-    )
-    return winner ? winner[1](state, action, ...others) : state
-  }
+  const getReducer = initialState =>
+    flagMemoized((state = initialState, action = {}, ...others) => {
+      const winner = watchers.find(([watcher]) =>
+        watcher(state, action, ...others)
+      )
+      return winner ? winner[1](state, action, ...others) : state
+    })
   return initialValue === undefined ? getReducer : getReducer(initialValue)
 }

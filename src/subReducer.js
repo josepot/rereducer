@@ -1,11 +1,25 @@
-import fnOrVal from './fnOrVal'
-import assocPath from './assocPath'
-import path from './path'
+import {
+  assocPath,
+  flagMemoized,
+  memoizeTemplateReducer,
+  path,
+  registerExternalReducer,
+  toReducer
+} from './utils/index'
 
-export default (...getters) => reducer => (state, ...rest) => {
-  const fnOrVal_ = fnOrVal(state, ...rest)
-  const pathProps = getters.map(fnOrVal_)
-  const oldVal = path(pathProps, state)
-  const newVal = reducer(oldVal, ...rest)
-  return oldVal === newVal ? state : assocPath(pathProps, newVal, state)
+export default (getters, reducer) => {
+  const getRoute = memoizeTemplateReducer(
+    Array.isArray(getters) ? getters.map(toReducer) : [toReducer(getters)]
+  )
+  const getVal = registerExternalReducer(reducer)
+
+  return flagMemoized(function() {
+    const route = getRoute.apply(null, arguments)
+    const state = arguments[0]
+    const oldVal = path(route, state)
+
+    arguments[0] = oldVal
+    const newVal = getVal.apply(null, arguments)
+    return oldVal === newVal ? state : assocPath(route, newVal, state)
+  })
 }

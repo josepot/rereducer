@@ -7,7 +7,7 @@ describe('subReducer', () => {
 
   const testSubreducer = (msg, keyGetter, expectedOutput) => {
     test(msg, () => {
-      const reducer = subReducer(keyGetter)(innerReducer)
+      const reducer = subReducer(keyGetter, innerReducer)
       expect(reducer(input, { id })).toEqual(expectedOutput)
     })
   }
