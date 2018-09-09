@@ -1,7 +1,7 @@
 import assoc from '../../src/utils/assoc'
 
 describe('assoc', () => {
-  test('it returns a new object', () => {
+  test('it does not mutate the input', () => {
     const input = {}
     expect(assoc('foo', 'foo', input)).not.toBe(input)
   })
