@@ -1,6 +1,6 @@
 import {
   assocPath,
-  flagMemoized,
+  customMemoized,
   memoizeTemplateReducer,
   path,
   registerExternalReducer,
@@ -13,13 +13,18 @@ export default (getters, reducer) => {
   )
   const getVal = registerExternalReducer(reducer)
 
-  return flagMemoized(function() {
-    const route = getRoute.apply(null, arguments)
-    const state = arguments[0]
-    const oldVal = path(route, state)
-
-    arguments[0] = oldVal
-    const newVal = getVal.apply(null, arguments)
-    return oldVal === newVal ? state : assocPath(route, newVal, state)
-  })
+  return customMemoized(
+    function() {
+      return [getRoute.apply(null, arguments), arguments[0]]
+    },
+    function() {
+      return [arguments]
+    },
+    (route, state, args) => {
+      const oldVal = path(route, state)
+      args[0] = oldVal
+      const newVal = getVal.apply(null, args)
+      return oldVal === newVal ? state : assocPath(route, newVal, state)
+    }
+  )
 }

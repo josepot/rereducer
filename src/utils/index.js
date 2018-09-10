@@ -4,6 +4,7 @@ import assocPath from './assocPath'
 import err from './err'
 import map from './map'
 import {
+  customMemoized,
   flagMemoized,
   memoizeExternalReducer,
   memoizeTemplateReducer
@@ -16,6 +17,7 @@ export {
   always,
   assoc,
   assocPath,
+  customMemoized,
   err,
   flagMemoized,
   map,

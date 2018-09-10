@@ -1,11 +1,11 @@
 import {
   always,
   assoc,
+  customMemoized,
   map,
   memoizeTemplateReducer,
   registerExternalReducer,
-  toReducer,
-  flagMemoized
+  toReducer
 } from './utils/index.js'
 
 export default (keyGetter_, template_) => {
@@ -15,18 +15,15 @@ export default (keyGetter_, template_) => {
       ? always(template_)
       : memoizeTemplateReducer(map(toReducer, template_))
 
-  let prevKey, prevValue, prevState, prevResult
-  return flagMemoized(function() {
-    const state = arguments[0]
-    const value = template.apply(null, arguments)
-    const key = keyGetter.apply(null, arguments)
-    if (state === prevState && value === prevValue && key === prevKey) {
-      return prevResult
-    }
-    prevKey = key
-    prevValue = value
-    prevState = state
-    prevResult = state[key] === value ? state : assoc(key, value, state)
-    return prevResult
-  })
+  return customMemoized(
+    function() {
+      return [
+        arguments[0],
+        template.apply(null, arguments),
+        keyGetter.apply(null, arguments)
+      ]
+    },
+    (state, value, key) =>
+      state[key] === value ? state : assoc(key, value, state)
+  )
 }
