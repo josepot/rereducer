@@ -1,5 +1,4 @@
 import {
-  always,
   assoc,
   customMemoized,
   map,
@@ -12,7 +11,7 @@ export default (keyGetter_, template_) => {
   const keyGetter = registerExternalReducer(keyGetter_)
   const template =
     typeof template_ !== 'object'
-      ? always(template_)
+      ? toReducer(template_)
       : memoizeTemplateReducer(map(toReducer, template_))
 
   return customMemoized(

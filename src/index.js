@@ -1,4 +1,4 @@
-import addReducer from './addReducer'
+import assocReducer from './assocReducer'
 import concatReducer from './concatReducer'
 import getPayload from './getPayload'
 import isType from './isType'
@@ -8,7 +8,7 @@ import subReducer from './subReducer'
 
 export default rereducer
 export {
-  addReducer,
+  assocReducer,
   concatReducer,
   getPayload, // keep backwards compatibility
   isType,

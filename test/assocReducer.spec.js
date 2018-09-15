@@ -1,6 +1,6 @@
-import { addReducer, payload } from '../src'
+import { assocReducer, payload } from '../src'
 
-describe('addReducer', () => {
+describe('assocReducer', () => {
   test('it works', () => {
     let idCalls = 0
     const id = state => {
@@ -11,7 +11,7 @@ describe('addReducer', () => {
     }
     const text = jest.fn(payload('text'))
 
-    const addItem = addReducer(id, {
+    const addItem = assocReducer(id, {
       id,
       text,
       completed: false
