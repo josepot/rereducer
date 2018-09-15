@@ -3,7 +3,6 @@ import {
   customMemoized,
   memoizeTemplateReducer,
   path,
-  registerExternalReducer,
   toReducer
 } from './utils/index'
 
@@ -11,7 +10,7 @@ export default (getters, reducer) => {
   const getRoute = memoizeTemplateReducer(
     Array.isArray(getters) ? getters.map(toReducer) : [toReducer(getters)]
   )
-  const getVal = registerExternalReducer(reducer)
+  const getVal = toReducer(reducer)
 
   return customMemoized(
     function() {
