@@ -1,5 +1,5 @@
 import expect from 'expect'
-import rereducer, { getPayload } from '../src/'
+import rereducer, { fromPayload } from '../src/'
 
 describe('Rereducer', () => {
   describe('patterns', () => {
@@ -89,7 +89,7 @@ describe('Rereducer', () => {
     it("should return the action's payload", () => {
       const initialstate = 0
       const payload = 10
-      const reducer = rereducer(initialstate, ['TEST', getPayload])
+      const reducer = rereducer(initialstate, ['TEST', fromPayload()])
 
       expect(reducer(initialstate, { type: 'TEST', payload })).toEqual(payload)
     })

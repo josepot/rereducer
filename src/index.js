@@ -1,19 +1,29 @@
-import assocReducer from './assocReducer'
-import concatReducer from './concatReducer'
-import getPayload from './getPayload'
-import isType from './isType'
-import mergeReducer from './mergeReducer'
-import payload from './payload'
+import assoc from './assoc'
+import concat from './concat'
+import converge from './converge'
+import fromAction from './fromAction'
+import fromMeta from './fromMeta'
+import fromPayload from './fromPayload'
+import fromState from './fromState'
+import getAction from './getAction'
+import getState from './getState'
+import isType from './fromMeta'
+import merge from './merge'
 import rereducer from './rereducer'
-import subReducer from './subReducer'
+import setPath from './setPath'
 
 export default rereducer
 export {
-  assocReducer,
-  concatReducer,
-  getPayload, // keep backwards compatibility
+  assoc,
+  concat,
+  converge,
+  fromAction,
+  fromMeta,
+  fromPayload,
+  fromState,
+  getAction,
+  getState,
   isType,
-  mergeReducer,
-  payload,
-  subReducer
+  merge,
+  setPath
 }

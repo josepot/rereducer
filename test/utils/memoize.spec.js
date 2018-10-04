@@ -2,10 +2,9 @@ import {
   flagMemoized,
   isMemoized,
   memoizeExternalReducer,
-  memoizeTemplateReducer,
-  customMemoized
+  memoizeTemplateReducer
 } from '../../src/utils/memoize'
-import { payload } from '../../src'
+import { fromPayload } from '../../src'
 
 const inc = x => x + 1
 
@@ -70,7 +69,7 @@ describe('memoize', () => {
 
   describe('template reducers', () => {
     it('memoizes Array template reducers', () => {
-      const template = memoizeTemplateReducer([inc, payload('text')])
+      const template = memoizeTemplateReducer([inc, fromPayload('text')])
 
       const result1 = template(1, { payload: { text: 'hello' } })
       const result2 = template(1, { payload: { text: 'hello' } })
@@ -80,57 +79,16 @@ describe('memoize', () => {
     })
 
     it('memoizes Object template reducers', () => {
-      const template = memoizeTemplateReducer({ x: inc, text: payload('text') })
+      const template = memoizeTemplateReducer({
+        x: inc,
+        text: fromPayload('text')
+      })
 
       const result1 = template(1, { payload: { text: 'hello' } })
       const result2 = template(1, { payload: { text: 'hello' } })
       const expectedResult = { x: 2, text: 'hello' }
       expect(result1).toEqual(expectedResult)
       expect(result2).toBe(result1)
-    })
-  })
-
-  describe('customMemoized', () => {
-    let counter
-    let memoized
-    beforeEach(() => {
-      counter = 0
-    })
-
-    it('memoizes the latests results of the given args', () => {
-      memoized = customMemoized(
-        (s, action) => [s, action.payload],
-        (...args) => {
-          counter++
-          return args
-        }
-      )
-      expect(counter).toBe(0)
-      const output1 = memoized('foo', { payload: 'bar' })
-      expect(output1).toEqual(['foo', 'bar'])
-      expect(counter).toBe(1)
-      const output2 = memoized('foo', { payload: 'bar' })
-      expect(counter).toBe(1)
-      expect(output2).toBe(output1)
-    })
-
-    it('does not memoize the extra args', () => {
-      memoized = customMemoized(
-        (s, action) => [s, action.payload],
-        (...args) => [args],
-        (...args) => {
-          counter++
-          return args
-        }
-      )
-
-      expect(counter).toBe(0)
-      const params = ['foo', { payload: 'bar' }]
-      const output1 = memoized(...params)
-      expect(output1).toEqual(['foo', 'bar', params])
-      const output2 = memoized('foo', { payload: 'bar' }, 'whatever')
-      expect(counter).toBe(1)
-      expect(output2).toBe(output1)
     })
   })
 })

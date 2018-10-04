@@ -1,8 +1,8 @@
-import { mergeReducer, payload } from '../src'
+import { merge, fromPayload } from '../src'
 
 describe('mergeReducer', () => {
   test('merges Objects', () => {
-    const reducer = mergeReducer(payload())
+    const reducer = merge(fromPayload())
     const output = reducer(
       { foo: 'foo', bar: null },
       { payload: { bar: 'bar', baz: 'baz' } }
@@ -11,7 +11,7 @@ describe('mergeReducer', () => {
   })
 
   test('merges Arrays', () => {
-    const reducer = mergeReducer(payload())
+    const reducer = merge(fromPayload())
     const output = reducer([1, 2, 3], { payload: [4, 5] })
     expect(output).toEqual([4, 5, 3])
   })

@@ -1,4 +1,4 @@
-import subReducer from '../src/subReducer'
+import setPath from '../src/setPath'
 
 describe('subReducer', () => {
   const innerReducer = x => x + 1
@@ -7,7 +7,7 @@ describe('subReducer', () => {
 
   const testSubreducer = (msg, keyGetter, expectedOutput) => {
     test(msg, () => {
-      const reducer = subReducer(keyGetter, innerReducer)
+      const reducer = setPath(keyGetter, innerReducer)
       expect(reducer(input, { id })).toEqual(expectedOutput)
     })
   }
