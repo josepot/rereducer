@@ -10,8 +10,10 @@ export const flagMemoized = fn => {
 export const isMemoized = memoizedSet.has.bind(memoizedSet)
 
 function cleanArgsStr(str) {
-  // TODO: implement this
-  return str
+  return str.replace(
+    /(\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*)/g,
+    ''
+  )
 }
 
 function getNRelevantArgs(fn) {
