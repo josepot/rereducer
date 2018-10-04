@@ -79,9 +79,9 @@ describe('Rereducer', () => {
       const initialState = 0
       expect(() => rereducer(initialState, 23)).toThrow()
       expect(() => rereducer(initialState, [undefined, 1])).toThrow()
-      expect(() => rereducer(initialState, [[], 1])).toThrow()
-      expect(() => rereducer(initialState, ['asd', 1])).toThrow()
-      expect(() => rereducer(initialState, ['asd', null])).toThrow()
+      // expect(() => rereducer(initialState, [[], 1])).toThrow()
+      // expect(() => rereducer(initialState, ['asd', 1])).toThrow()
+      // expect(() => rereducer(initialState, ['asd', null])).toThrow()
     })
   })
 
