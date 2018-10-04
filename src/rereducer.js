@@ -1,4 +1,9 @@
-import { err, flagMemoized, registerExternalReducer } from './utils/index'
+import {
+  err,
+  flagMemoized,
+  registerExternalReducer,
+  toReducer
+} from './utils/index'
 import isType from './isType'
 
 const getMatcher = pattern => {
@@ -29,14 +34,10 @@ const validateArguments = args =>
     )
     err(arg.length === 2, `The entries of the main Array should be Tuples`)
 
-    const [pattern, transformation] = arg
+    const [pattern] = arg
     err(
       isValidPattern(pattern),
       'The first entry of the Tuple is not a valid pattern'
-    )
-    err(
-      typeof transformation === 'function',
-      'The second entry of a Tuple should be a reducer'
     )
   })
 
@@ -59,7 +60,7 @@ export default (...args) => {
   }
   const watchers = pairs.map(([pattern, reducer]) => [
     getMatcher(pattern),
-    registerExternalReducer(reducer)
+    toReducer(reducer)
   ])
   const getReducer = initialState =>
     flagMemoized((state = initialState, action = {}, ...others) => {
