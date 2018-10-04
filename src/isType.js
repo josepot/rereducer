@@ -1,3 +1,4 @@
-import { flagMemoized } from './utils/index'
+import converge from './converge'
+import fromAction from './fromAction'
 
-export default x => flagMemoized((s, { type }) => type === x)
+export default x => converge([fromAction('type')], y => y === x)

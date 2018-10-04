@@ -1,4 +1,4 @@
-import payload from '../src/payload'
+import fromPayload from '../src/fromPayload'
 
 describe('payload', () => {
   const action = {
@@ -13,7 +13,7 @@ describe('payload', () => {
 
   const testPayload = (msg, args, expectedOutput) => {
     test(msg, () => {
-      expect(payload(...args)(undefined, action)).toBe(expectedOutput)
+      expect(fromPayload(...args)(undefined, action)).toBe(expectedOutput)
     })
   }
 

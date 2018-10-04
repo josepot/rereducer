@@ -30,7 +30,7 @@ function getNRelevantArgs(fn) {
   return argsStr.indexOf('...') > -1 ? Infinity : argsStr.split(',').length
 }
 
-function areArgsEqual(prev, next) {
+export function areArgsEqual(prev, next) {
   if (prev === null || next === null || prev.length !== next.length) {
     return false
   }
@@ -73,21 +73,5 @@ export const memoizeTemplateReducer = template => {
       if (prevResult[key] !== res[key]) return (prevResult = res)
     }
     return prevResult
-  })
-}
-
-const defaultExtraArgsFn = always([])
-export function customMemoized(argsFn, ...others) {
-  const [extraArgsFn, updaterFn] =
-    others.length === 1 ? [defaultExtraArgsFn, others[0]] : others
-
-  let prevArgs = null
-  let prevResult
-  return flagMemoized(function() {
-    const newArgs = argsFn.apply(null, arguments)
-    if (areArgsEqual(prevArgs, newArgs)) return prevResult
-    prevArgs = newArgs
-    const extraArgs = extraArgsFn.apply(null, arguments)
-    return (prevResult = updaterFn.apply(null, newArgs.concat(extraArgs)))
   })
 }

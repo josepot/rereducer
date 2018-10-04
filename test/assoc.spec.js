@@ -1,6 +1,6 @@
-import { assocReducer, payload } from '../src'
+import { assoc, fromPayload } from '../src'
 
-describe('assocReducer', () => {
+describe('assoc', () => {
   test('it works', () => {
     let idCalls = 0
     const id = state => {
@@ -9,9 +9,9 @@ describe('assocReducer', () => {
         .map(x => parseInt(x, 10))
         .reduce((acc, key) => (key >= acc ? key + 1 : acc), 1)
     }
-    const text = jest.fn(payload('text'))
+    const text = jest.fn(fromPayload('text'))
 
-    const addItem = assocReducer(id, {
+    const addItem = assoc(id, {
       id,
       text,
       completed: false
