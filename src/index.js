@@ -1,4 +1,3 @@
-import assoc from './assoc'
 import composeReducers from './composeReducers'
 import concat from './concat'
 import createReducer from './createReducer'
@@ -12,12 +11,12 @@ import getState from './getState'
 import isType from './fromMeta'
 import map from './map'
 import merge from './merge'
+import path from './path'
 import rereducer from './rereducer'
-import setPath from './setPath'
 
 export default rereducer
+const [innerReducer, outerReducer] = [true, false].map(path)
 export {
-  assoc,
   composeReducers,
   concat,
   createReducer,
@@ -28,8 +27,9 @@ export {
   fromState,
   getAction,
   getState,
+  innerReducer,
   isType,
   map,
   merge,
-  setPath
+  outerReducer
 }

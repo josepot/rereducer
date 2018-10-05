@@ -1,13 +1,13 @@
-import setPath from '../src/setPath'
+import { innerReducer } from '../src'
 
-describe('subReducer', () => {
-  const innerReducer = x => x + 1
+describe('innerReucer', () => {
+  const inc = x => x + 1
   const input = { a: 1, b: 2, c: 3 }
   const id = 'b'
 
   const testSubreducer = (msg, keyGetter, expectedOutput) => {
     test(msg, () => {
-      const reducer = setPath(keyGetter, innerReducer)
+      const reducer = innerReducer(keyGetter, inc)
       expect(reducer(input, { id })).toEqual(expectedOutput)
     })
   }

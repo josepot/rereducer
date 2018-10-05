@@ -1,6 +1,6 @@
-import { assoc, fromPayload } from '../src'
+import { outerReducer, fromPayload } from '../src'
 
-describe('assoc', () => {
+describe('outerReducer', () => {
   test('it works', () => {
     let idCalls = 0
     const id = state => {
@@ -11,7 +11,7 @@ describe('assoc', () => {
     }
     const text = jest.fn(fromPayload('text'))
 
-    const addItem = assoc(id, {
+    const addItem = outerReducer([id], {
       id,
       text,
       completed: false
