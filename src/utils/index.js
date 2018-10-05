@@ -1,3 +1,4 @@
+import always from './always'
 import assoc from './assoc'
 import assocPath from './assocPath'
 import clone from './clone'
@@ -10,6 +11,7 @@ import registerExternalReducer from './registerExternalReducer'
 import toReducer from './toReducer'
 
 export {
+  always,
   assoc,
   assocPath,
   areArgsEqual,
