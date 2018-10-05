@@ -1,5 +1,5 @@
-import getState from './getState'
-import converge from './converge'
+import horInstanceFactory from './horInstanceFactory'
 
-const concat = (state, val) => state.concat(val)
-export default getter => converge([getState, getter], concat)
+export default horInstanceFactory(function(x) {
+  return this.concat(x)
+})
