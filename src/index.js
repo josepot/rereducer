@@ -9,6 +9,7 @@ import fromState from './fromState'
 import getAction from './getAction'
 import getState from './getState'
 import isType from './fromMeta'
+import map from './map'
 import merge from './merge'
 import rereducer from './rereducer'
 import setPath from './setPath'
@@ -26,6 +27,7 @@ export {
   getAction,
   getState,
   isType,
+  map,
   merge,
   setPath
 }
