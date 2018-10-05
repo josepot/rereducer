@@ -1,7 +1,8 @@
 import { areArgsEqual, flagMemoized, toReducer } from './utils/index.js'
 
-export default (dependencies, computeFn) => {
+export default (dependencies, computeFn_) => {
   const getDependencies = toReducer(dependencies)
+  const computeFn = toReducer(computeFn_)
   let prevDependencies = null
   let prevResult
 
