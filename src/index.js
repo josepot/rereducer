@@ -1,4 +1,5 @@
 import assoc from './assoc'
+import composeReducers from './composeReducers'
 import concat from './concat'
 import converge from './converge'
 import filter from './filter'
@@ -17,6 +18,7 @@ import setPath from './setPath'
 export default rereducer
 export {
   assoc,
+  composeReducers,
   concat,
   converge,
   filter,
