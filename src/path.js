@@ -3,10 +3,12 @@ import composeReducers from './composeReducers'
 import createReducer from './createReducer'
 import getState from './getState'
 
-export default (getters, innerReducer_) => {
-  const innerReducer = toReducer(innerReducer_)
+export default isInner => (getters, reducer_) => {
+  const reducer = toReducer(reducer_)
   const getCurrentValue = createReducer([getters, getState], path)
-  const getNewValue = composeReducers(innerReducer, getCurrentValue)
+  const getNewValue = isInner
+    ? composeReducers(reducer, getCurrentValue)
+    : reducer
 
   return createReducer(
     [getCurrentValue, getNewValue, getState, getters],
