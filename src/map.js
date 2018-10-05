@@ -1,5 +1,5 @@
 import getState from './getState'
-import converge from './converge'
+import createReducer from './createReducer'
 import { map } from './utils/index'
 
-export default mapFnReducer => converge([mapFnReducer, getState], map)
+export default mapFnReducer => createReducer([mapFnReducer, getState], map)

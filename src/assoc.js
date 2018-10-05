@@ -1,9 +1,9 @@
 import getState from './getState'
-import converge from './converge'
+import createReducer from './createReducer'
 import { assoc } from './utils/index.js'
 
 export default (keyGetter, template) =>
-  converge(
+  createReducer(
     [getState, keyGetter, template],
     (state, key, value) =>
       state[key] === value ? state : assoc(key, value, state)

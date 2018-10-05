@@ -1,5 +1,5 @@
 import getState from './getState'
-import converge from './converge'
+import createReducer from './createReducer'
 import { path } from './utils/index'
 
-export default (...getRoute) => converge([getRoute, getState], path)
+export default (...getRoute) => createReducer([getRoute, getState], path)

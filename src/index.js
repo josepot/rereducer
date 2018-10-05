@@ -1,7 +1,7 @@
 import assoc from './assoc'
 import composeReducers from './composeReducers'
 import concat from './concat'
-import converge from './converge'
+import createReducer from './createReducer'
 import filter from './filter'
 import fromAction from './fromAction'
 import fromMeta from './fromMeta'
@@ -20,7 +20,7 @@ export {
   assoc,
   composeReducers,
   concat,
-  converge,
+  createReducer,
   filter,
   fromAction,
   fromMeta,

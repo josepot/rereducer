@@ -1,4 +1,5 @@
 import getState from './getState'
-import converge from './converge'
+import createReducer from './createReducer'
 
-export default fn => reducer => converge([getState, reducer], fn.call.bind(fn))
+export default fn => reducer =>
+  createReducer([getState, reducer], fn.call.bind(fn))
