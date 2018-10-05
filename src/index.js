@@ -1,6 +1,7 @@
 import assoc from './assoc'
 import concat from './concat'
 import converge from './converge'
+import filter from './filter'
 import fromAction from './fromAction'
 import fromMeta from './fromMeta'
 import fromPayload from './fromPayload'
@@ -17,6 +18,7 @@ export {
   assoc,
   concat,
   converge,
+  filter,
   fromAction,
   fromMeta,
   fromPayload,
