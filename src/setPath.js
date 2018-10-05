@@ -1,11 +1,12 @@
-import { assocPath, path } from './utils/index'
+import { assocPath, path, toReducer } from './utils/index'
+import composeReducers from './composeReducers'
 import converge from './converge'
 import getState from './getState'
-import getAction from './getAction'
 
-export default (getters, innerReducer) => {
+export default (getters, innerReducer_) => {
+  const innerReducer = toReducer(innerReducer_)
   const getCurrentValue = converge([getters, getState], path)
-  const getNewValue = converge([getCurrentValue, getAction], innerReducer)
+  const getNewValue = composeReducers(innerReducer, getCurrentValue)
 
   return converge(
     [getCurrentValue, getNewValue, getState, getters],
