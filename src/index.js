@@ -12,9 +12,8 @@ import isType from './fromMeta'
 import map from './map'
 import merge from './merge'
 import path from './path'
-import rereducer from './rereducer'
+import switchReducers from './switchReducers'
 
-export default rereducer
 const [innerReducer, outerReducer] = [true, false].map(path)
 export {
   composeReducers,
@@ -31,5 +30,6 @@ export {
   isType,
   map,
   merge,
-  outerReducer
+  outerReducer,
+  switchReducers
 }
