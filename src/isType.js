@@ -1,4 +1,4 @@
-import converge from './converge'
+import composeReducers from './composeReducers'
 import fromAction from './fromAction'
 
-export default x => converge([fromAction('type')], y => y === x)
+export default x => composeReducers(y => y === x, fromAction('type'))
