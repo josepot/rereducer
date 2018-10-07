@@ -8,5 +8,6 @@ script:
   - yarn test:types
 branches:
   only:
-    - master
+  - gh-pages
+  - /.*/
 cache: yarn
