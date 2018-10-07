@@ -13,7 +13,7 @@ import map from './map'
 import merge from './merge'
 import reject from './reject'
 import path from './path'
-import switchReducers from './switchReducers'
+import switcher from './switcher'
 
 const [innerReducer, outerReducer] = [true, false].map(path)
 export {
@@ -33,5 +33,5 @@ export {
   merge,
   outerReducer,
   reject,
-  switchReducers
+  switcher
 }
