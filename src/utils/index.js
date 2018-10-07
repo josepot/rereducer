@@ -3,6 +3,7 @@ import assoc from './assoc'
 import assocPath from './assocPath'
 import clone from './clone'
 import err from './err'
+import { filter, reject } from './filterReject'
 import isEmpty from './isEmpty'
 import map from './map'
 import { areArgsEqual, flagMemoized } from './memoize'
@@ -17,9 +18,11 @@ export {
   areArgsEqual,
   clone,
   err,
+  filter,
   flagMemoized,
   isEmpty,
   map,
+  reject,
   registerExternalReducer,
   toReducer,
   path
