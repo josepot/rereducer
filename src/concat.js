@@ -1,5 +1,3 @@
-import horInstanceFactory from './horInstanceFactory'
+import withState from './withState'
 
-export default horInstanceFactory(function(x) {
-  return this.concat(x)
-})
+export default withState((val, state) => state.concat(val))

@@ -1,5 +1,4 @@
-import getState from './getState'
-import createReducer from './createReducer'
+import withState from './withState'
 import { map } from './utils/index'
 
-export default mapFnReducer => createReducer([mapFnReducer, getState], map)
+export default withState(map)

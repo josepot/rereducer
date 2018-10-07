@@ -11,6 +11,7 @@ import getState from './getState'
 import isType from './fromMeta'
 import map from './map'
 import merge from './merge'
+import reject from './reject'
 import path from './path'
 import switchReducers from './switchReducers'
 
@@ -31,5 +32,6 @@ export {
   map,
   merge,
   outerReducer,
+  reject,
   switchReducers
 }
