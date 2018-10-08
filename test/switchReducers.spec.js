@@ -55,16 +55,12 @@ describe('switchReducers', () => {
     })
   })
 
-  describe('initial value', () => {
-    it('should return a function that takes the initial value when not provided', () => {
-      const initialValue = 5
-      const sillyReducer = switchReducers(['INCREASE', x => x + 1])
-
-      expect(typeof sillyReducer(initialValue)).toBe('function')
-      expect(sillyReducer(initialValue)()).toEqual(initialValue)
-      expect(
-        sillyReducer(initialValue)(initialValue, { type: 'INCREASE' })
-      ).toEqual(6)
+  describe('initial state', () => {
+    it('should throw when initialState is canundefined', () => {
+      expect(() =>
+        switchReducers(undefined, ['INCREASE', x => x + 1])
+      ).toThrow()
+      expect(() => switchReducers(['INCREASE', x => x + 1])).toThrow()
     })
   })
 
