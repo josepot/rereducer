@@ -26,8 +26,10 @@ const isValidPattern = pattern => {
   return false
 }
 
-const validateArguments = args =>
-  args.forEach(arg => {
+const validatePairs = pairs => {
+  err(pairs.length > 0, `No Matchers were passed to switchReducers`)
+
+  pairs.forEach(arg => {
     err(
       Array.isArray(arg),
       `Expected an Array instead it received ${typeof arg}`
@@ -40,34 +42,26 @@ const validateArguments = args =>
       'The first entry of the Tuple is not a valid pattern'
     )
   })
+}
 
-const isArgumentInitialValue = argument =>
-  !(
-    Array.isArray(argument) &&
-    argument.length === 2 &&
-    typeof argument[1] === 'function' &&
-    isValidPattern(argument[0])
-  )
-
-export default (...args) => {
-  const [firstArgument] = args
-  const [initialValue, pairs] = isArgumentInitialValue(firstArgument)
-    ? [firstArgument, args.slice(1)]
-    : [undefined, args]
-
+export default (initialState, ...pairs) => {
   if (process.env.NODE_ENV !== 'production') {
-    validateArguments(pairs)
+    err(
+      initialState !== undefined,
+      `The initial state of a reducer can not be undefined`
+    )
+    validatePairs(pairs)
   }
+
   const watchers = pairs.map(([pattern, reducer]) => [
     getMatcher(pattern),
     toReducer(reducer)
   ])
-  const getReducer = initialState =>
-    flagMemoized((state = initialState, action = {}, ...others) => {
-      const winner = watchers.find(([watcher]) =>
-        watcher(state, action, ...others)
-      )
-      return winner ? winner[1](state, action, ...others) : state
-    })
-  return initialValue === undefined ? getReducer : getReducer(initialValue)
+
+  return flagMemoized((state = initialState, action = {}, ...others) => {
+    const winner = watchers.find(([watcher]) =>
+      watcher(state, action, ...others)
+    )
+    return winner ? winner[1](state, action, ...others) : state
+  })
 }
