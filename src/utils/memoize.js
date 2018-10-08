@@ -17,16 +17,13 @@ function cleanArgsStr(str) {
 }
 
 function getNRelevantArgs(fn) {
-  const str = fn.toString()
+  const str = cleanArgsStr(fn.toString())
   if (str.startsWith('function') && str.match(/\W(arguments)\W/))
     return Infinity
 
-  const argsStr = cleanArgsStr(
-    str.substring(str.indexOf('(') + 1, str.indexOf(')'))
-  )
+  const argsStr = str.substring(str.indexOf('(') + 1, str.indexOf(')'))
 
   if (argsStr.length === 0) return 0
-
   return argsStr.indexOf('...') > -1 ? Infinity : argsStr.split(',').length
 }
 
@@ -50,7 +47,7 @@ export const memoizeExternalReducer = reducer => {
 
   let lastArgs = null
   let lastResult = null
-  const result = function() {
+  return flagMemoized(function() {
     if (arguments.length > nRelevantArgs) {
       arguments.length = nRelevantArgs
     }
@@ -58,8 +55,7 @@ export const memoizeExternalReducer = reducer => {
     lastResult = reducer.apply(null, arguments)
     lastArgs = arguments
     return lastResult
-  }
-  return flagMemoized(result)
+  })
 }
 
 export const memoizeTemplateReducer = template => {
