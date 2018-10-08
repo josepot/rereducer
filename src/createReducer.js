@@ -6,8 +6,8 @@ export default (dependencies, computeFn_) => {
   let prevDependencies = null
   let prevResult
 
-  return flagMemoized(function() {
-    const newDependencies = getDependencies.apply(null, arguments)
+  return flagMemoized(function(state, action) {
+    const newDependencies = getDependencies(state, action)
     if (areArgsEqual(prevDependencies, newDependencies)) return prevResult
     prevDependencies = newDependencies
     return (prevResult = computeFn.apply(null, newDependencies))
