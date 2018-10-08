@@ -13,9 +13,7 @@ const getMatcher = pattern => {
 
   // It has to be an Array
   const matchers = pattern.map(getMatcher)
-  return function() {
-    return matchers.find(m => m.apply(null, arguments)) !== undefined
-  }
+  return (state, action) => matchers.find(m => m(state, action)) !== undefined
 }
 
 const isValidPattern = pattern => {
@@ -58,10 +56,8 @@ export default (initialState, ...pairs) => {
     toReducer(reducer)
   ])
 
-  return flagMemoized((state = initialState, action = {}, ...others) => {
-    const winner = watchers.find(([watcher]) =>
-      watcher(state, action, ...others)
-    )
-    return winner ? winner[1](state, action, ...others) : state
+  return flagMemoized((state = initialState, action = {}) => {
+    const winner = watchers.find(([watcher]) => watcher(state, action))
+    return winner ? winner[1](state, action) : state
   })
 }
