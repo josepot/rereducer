@@ -42,23 +42,6 @@ const myWatcher = (state: State, action: Action) => true;
   );
 });
 
-(() => { /// Curried initial value
-  // $ExpectType (initialValue: State) => Reducer<State, Action>
-  const noWatchers = rereducer<State, Action>(
-  );
-
-  // $ExpectType (initialValue: State) => Reducer<State, Action>
-  const singleWatcher = rereducer<State, Action>(
-    [ActionType.Action1, myAction1Reducer]
-  );
-
-  // $ExpectType (initialValue: State) => Reducer<State, Action>
-  const twoWatchers = rereducer<State, Action>(
-    [ActionType.Action1, myAction1Reducer],
-    [ActionType.Action2, myAction2Reducer]
-  );
-});
-
 (() => { /// Initial value as first parameter
   // $ExpectType Reducer<State, Action>
   const noWatchers = rereducer<State, Action>(
@@ -94,18 +77,5 @@ const myWatcher = (state: State, action: Action) => true;
     initialState,
     // $ExpectError
     [ActionType.Action1, myAction2Reducer]
-  );
-
-  rereducer<State, Action>(
-    [ActionType.Action2, myGenericReducer]
-  );
-
-  rereducer<State, Action>(
-    // $ExpectError
-    [ActionType.Action2, myAction1Reducer]
-  );
-
-  rereducer<State, Action>(
-    [ActionType.Action2, myAction2Reducer]
   );
 });

@@ -23,7 +23,6 @@ export type RuleDef<TS, TA extends ActionWithType> =
   | ActionTypeRuleDef<TS, TA>
   | AdvancedRuleDef<TS, TA>;
 
-declare function rereducer<TS, TA extends ActionWithType>(...ruleDefs: Array<RuleDef<TS, TA>>): (initialValue: TS) => Reducer<TS, TA>;
 declare function rereducer<TS, TA extends ActionWithType>(initialValue: TS, ...ruleDefs: Array<RuleDef<TS, TA>>): Reducer<TS, TA>;
 
 export default rereducer;
