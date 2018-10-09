@@ -1,7 +1,7 @@
 import { composeReducers as c, filter, fromPayload } from '../src'
 
 const equals = x => y => x === y
-const reducer = filter(c(equals, fromPayload('id')))
+const reducer = filter(c(equals, fromPayload(['id'])))
 
 describe('filter', () => {
   test('filters arrays', () => {

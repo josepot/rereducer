@@ -1,6 +1,6 @@
 import { omit, fromPayload } from '../src'
 
-const reducer = omit(fromPayload('ids'))
+const reducer = omit(fromPayload(['ids']))
 
 describe('omit', () => {
   describe('arrays', () => {

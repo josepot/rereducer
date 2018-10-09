@@ -20,8 +20,8 @@ import {
   switchReducers
 } from '../../src'
 
-const getChildId = fromAction('childId')
-const getNodeId = fromAction('nodeId')
+const getChildId = fromAction(['childId'])
+const getNodeId = fromAction(['nodeId'])
 const isActionMissingNodeId = c(isNil, getNodeId)
 
 const node = combineReducers({
