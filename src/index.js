@@ -12,6 +12,7 @@ import isType from './fromMeta'
 import map from './map'
 import merge from './merge'
 import omit from './omit'
+import pick from './pick'
 import reject from './reject'
 import path from './path'
 import switchReducers from './switchReducers'
@@ -33,6 +34,7 @@ export {
   map,
   merge,
   omit,
+  pick,
   outerReducer,
   reject,
   switchReducers
