@@ -65,11 +65,11 @@ describe('switchReducers', () => {
   })
 
   describe('other args propagation', () => {
-    it('if other arguments are passed to the reducer, they should be used', () => {
+    it('if other arguments are passed to the reducer, they should be ignored', () => {
       const subReducer = (state, action, otherState = 0) => state + otherState
       const reducer = switchReducers(0, ['TEST', subReducer])
 
-      expect(reducer(10, { type: 'TEST' }, 100)).toEqual(110)
+      expect(reducer(10, { type: 'TEST' }, 100)).toEqual(10)
     })
   })
 
