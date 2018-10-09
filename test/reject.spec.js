@@ -1,7 +1,7 @@
 import { composeReducers as c, reject, fromPayload } from '../src'
 
 const equals = x => y => x === y
-const reducer = reject(c(equals, fromPayload('id')))
+const reducer = reject(c(equals, fromPayload(['id'])))
 
 describe('reject', () => {
   test('rejects arrays', () => {

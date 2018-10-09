@@ -9,7 +9,7 @@ describe('outerReducer', () => {
         .map(x => parseInt(x, 10))
         .reduce((acc, key) => (key >= acc ? key + 1 : acc), 1)
     }
-    const text = jest.fn(fromPayload('text'))
+    const text = jest.fn(fromPayload(['text']))
 
     const addItem = outerReducer([id], {
       id,

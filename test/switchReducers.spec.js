@@ -1,5 +1,5 @@
 import expect from 'expect'
-import { switchReducers, fromPayload } from '../src/'
+import { switchReducers, fromAction } from '../src/'
 
 describe('switchReducers', () => {
   describe('patterns', () => {
@@ -88,7 +88,10 @@ describe('switchReducers', () => {
     it("should return the action's payload", () => {
       const initialstate = 0
       const payload = 10
-      const reducer = switchReducers(initialstate, ['TEST', fromPayload()])
+      const reducer = switchReducers(initialstate, [
+        'TEST',
+        fromAction(['payload'])
+      ])
 
       expect(reducer(initialstate, { type: 'TEST', payload })).toEqual(payload)
     })

@@ -13,7 +13,7 @@ describe('payload', () => {
 
   const testPayload = (msg, args, expectedOutput) => {
     test(msg, () => {
-      expect(fromPayload(...args)(undefined, action)).toBe(expectedOutput)
+      expect(fromPayload(args)(undefined, action)).toBe(expectedOutput)
     })
   }
 
