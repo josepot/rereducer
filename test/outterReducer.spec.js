@@ -11,7 +11,7 @@ describe('outerReducer', () => {
     }
     const text = jest.fn(fromPayload(['text']))
 
-    const addItem = outerReducer([id], {
+    const addItem = outerReducer([id])({
       id,
       text,
       completed: false
