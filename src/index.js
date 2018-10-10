@@ -16,6 +16,7 @@ import pick from './pick'
 import reject from './reject'
 import path from './path'
 import switchReducers from './switchReducers'
+import update from './update'
 
 const [innerReducer, outerReducer] = [true, false].map(path)
 export {
@@ -37,5 +38,6 @@ export {
   pick,
   outerReducer,
   reject,
-  switchReducers
+  switchReducers,
+  update
 }
