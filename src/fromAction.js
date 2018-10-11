@@ -1,5 +1,4 @@
 import getAction from './getAction'
-import createReducer from './createReducer'
-import { path } from './utils/index'
+import { getViewerFor } from './path'
 
-export default route => createReducer([route, getAction], path)
+export default getViewerFor(getAction)

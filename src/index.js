@@ -14,11 +14,10 @@ import merge from './merge'
 import omit from './omit'
 import pick from './pick'
 import reject from './reject'
-import path from './path'
+import { innerReducer, outerReducer } from './path'
 import switchReducers from './switchReducers'
 import update from './update'
 
-const [innerReducer, outerReducer] = [true, false].map(path)
 export {
   composeReducers,
   concat,
