@@ -1,3 +1,4 @@
 import fromAction from './fromAction'
+import { getViewerFor } from './path'
 
-export default route => fromAction(['meta', ...route])
+export default getViewerFor(fromAction('meta'))

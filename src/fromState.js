@@ -1,5 +1,4 @@
 import getState from './getState'
-import createReducer from './createReducer'
-import { path } from './utils/index'
+import { getViewerFor } from './path'
 
-export default route => createReducer([route, getState], path)
+export default getViewerFor(getState)

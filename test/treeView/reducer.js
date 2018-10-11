@@ -19,8 +19,8 @@ import {
   switchReducers
 } from '../../src'
 
-const getChildId = fromAction(['childId'])
-const getNodeId = fromAction(['nodeId'])
+const getChildId = fromAction('childId')
+const getNodeId = fromAction('nodeId')
 
 const setNode = innerReducer([getNodeId])
 const setCounter = c(setNode, innerReducer(['counter']))
