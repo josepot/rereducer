@@ -14,15 +14,15 @@ describe('innerReucer', () => {
 
   testSubreducer(
     'keyGetter is a fn',
-    (state, { id: id1 }) => id1,
+    [(state, { id: id1 }) => id1],
     Object.assign({}, input, { [id]: input[id] + 1 })
   )
 
   testSubreducer(
     'keyGetter is a value',
-    id,
+    [id],
     Object.assign({}, input, { [id]: input[id] + 1 })
   )
 
-  testSubreducer('noMatch', 'z', Object.assign({}, input, { z: NaN }))
+  testSubreducer('noMatch', ['z'], Object.assign({}, input, { z: NaN }))
 })
