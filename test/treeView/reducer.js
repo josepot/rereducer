@@ -7,8 +7,7 @@ import {
   CREATE_NODE,
   DELETE_NODE
 } from './actions'
-import { combineReducers } from 'redux'
-import { compose as c, equals, inc, isNil, T } from 'ramda'
+import { compose as c, equals, inc, isNil } from 'ramda'
 import {
   concat,
   createReducer,
@@ -22,17 +21,11 @@ import {
 
 const getChildId = fromAction(['childId'])
 const getNodeId = fromAction(['nodeId'])
-const isActionMissingNodeId = c(isNil, getNodeId)
 
-const node = combineReducers({
-  id: switchReducers(0, [CREATE_NODE, getNodeId]),
-  counter: switchReducers(0, [INCREMENT, inc]),
-  childIds: switchReducers(
-    [],
-    [ADD_CHILD, concat(getChildId)],
-    [REMOVE_CHILD, reject(c(equals, getChildId))]
-  )
-})
+const setNode = innerReducer([getNodeId])
+const setCounter = c(setNode, innerReducer(['counter']))
+const setChildIds = c(setNode, innerReducer(['childIds']))
+const isActionMissingNodeId = c(isNil, getNodeId)
 
 const getSubtreeIds = createReducer([getState, getNodeId], (tree, rootId) => {
   const innerFn = id => [id, ...tree[id].childIds.map(innerFn)]
@@ -43,5 +36,8 @@ export default switchReducers(
   {},
   [isActionMissingNodeId, getState],
   [DELETE_NODE, omit(getSubtreeIds)],
-  [T, innerReducer([getNodeId], node)]
+  [CREATE_NODE, setNode({ id: getNodeId, counter: 0, childIds: [] })],
+  [INCREMENT, setCounter(inc)],
+  [ADD_CHILD, setChildIds(concat(getChildId))],
+  [REMOVE_CHILD, setChildIds(reject(c(equals, getChildId)))]
 )
