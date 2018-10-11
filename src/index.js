@@ -15,10 +15,12 @@ import omit from './omit'
 import pick from './pick'
 import reject from './reject'
 import path from './path'
+import prop from './prop'
 import switchReducers from './switchReducers'
 import update from './update'
 
 const [innerReducer, outerReducer] = [true, false].map(path)
+const [innerProp, outerProp] = [true, false].map(prop)
 export {
   composeReducers,
   concat,
@@ -30,12 +32,14 @@ export {
   fromState,
   getAction,
   getState,
+  innerProp,
   innerReducer,
   isType,
   map,
   merge,
   omit,
   pick,
+  outerProp,
   outerReducer,
   reject,
   switchReducers,
