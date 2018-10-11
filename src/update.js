@@ -1,4 +1,6 @@
-import { createReducer, getAction, map } from './index'
+import createReducer from './createReducer'
+import getAction from './getAction'
+import map from './map'
 
 export default function update() {
   const whenHOF = arguments[0]
