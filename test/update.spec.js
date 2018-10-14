@@ -75,4 +75,19 @@ describe('update', () => {
       expect(output).toBe(state)
     })
   })
+
+  describe('currying', () => {
+    test('invoking it with 0 args returns the original function', () =>
+      expect(update()).toBe(update))
+
+    test('invoking it with 1 arg returns a partial function', () => {
+      const setToZeroIfGreaterThanActionValue = update(
+        (s, { value }) => state => state > value
+      )(0)
+      const state = [1, 3, 10, 2, 15, 4, 9]
+      const output = setToZeroIfGreaterThanActionValue(state, { value: 7 })
+      const expectedOutput = [1, 3, 0, 2, 0, 4, 0]
+      expect(output).toEqual(expectedOutput)
+    })
+  })
 })
