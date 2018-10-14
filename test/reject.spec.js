@@ -23,4 +23,18 @@ describe('reject', () => {
       bar: 2
     })
   })
+
+  test('it does not return a new object/array when there are no rejections', () => {
+    const arrayInput = [1, 2, 3, 4]
+    const arrayOutput = reducer(arrayInput, { payload: { id: 5 } })
+    expect(arrayOutput).toBe(arrayInput)
+
+    const objectInput = {
+      foo: 1,
+      bar: 2,
+      baz: 3
+    }
+    const objectOutput = reducer(objectInput, { payload: { id: 5 } })
+    expect(objectOutput).toBe(objectInput)
+  })
 })
