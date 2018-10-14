@@ -159,6 +159,31 @@ describe('path', () => {
           expect(result4).toEqual({ bar: { foo: 'foo', test: 2 } })
         }
       )
+
+      commonTester(
+        'does not return a new state if the updaters return the same value',
+        hor => {
+          const state = { bar: 0 }
+          const updater = (state, { value1, value2 }) => value1 + value2
+
+          const reducer = hor('bar', updater)
+
+          const result1 = reducer(state, { value1: 1, value2: 2 })
+          expect(result1).toEqual({ bar: 3 })
+          const result2 = reducer(state, { value1: 2, value2: 1 })
+          expect(result2).toBe(result1)
+          const result3 = reducer(state, { value1: 1, value2: 2 })
+          expect(result3).toBe(result1)
+          const result4 = reducer(state, { value1: 3, value2: 0 })
+          expect(result4).toBe(result1)
+          const result5 = reducer(state, { value1: 0, value2: 3 })
+          expect(result5).toBe(result1)
+
+          const result6 = reducer(state, { value1: 1, value2: 3 })
+          expect(result6).not.toBe(result1)
+          expect(result6).toEqual({ bar: 4 })
+        }
+      )
     })
 
     describe('currying', () => {
