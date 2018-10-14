@@ -2,7 +2,8 @@ import {
   flagMemoized,
   isMemoized,
   memoizeExternalReducer,
-  memoizeTemplateReducer
+  memoizeTemplateReducer,
+  getNRelevantArgs
 } from '../../src/utils/memoize'
 import { fromPayload } from '../../src'
 
@@ -65,6 +66,11 @@ describe('memoize', () => {
       expect(result).toBe(3)
       expect(counter).toBe(2)
     })
+
+    it('does not memoize an external reducer more than once', () => {
+      const rememoized = memoizeExternalReducer(memoized)
+      expect(rememoized).toBe(memoized)
+    })
   })
 
   describe('template reducers', () => {
@@ -89,6 +95,43 @@ describe('memoize', () => {
       const expectedResult = { x: 2, text: 'hello' }
       expect(result1).toEqual(expectedResult)
       expect(result2).toBe(result1)
+    })
+  })
+
+  describe('getNRelevantArgs', () => {
+    it('returns Infinity for functions that use `arguments`', () => {
+      const input = function() {
+        return arguments
+      }
+      expect(getNRelevantArgs(input)).toBe(Infinity)
+    })
+
+    it('returns Infinity for functions that use the spread operator', () => {
+      const input = {
+        toString: () => '(a, b, ...args) => args'
+      }
+      expect(getNRelevantArgs(input)).toBe(Infinity)
+    })
+
+    it('returns the real number of args for the rest of functions', () => {
+      expect(getNRelevantArgs((a, b, c) => c)).toBe(3)
+
+      function withAnnoyingComments(
+        // this comment is missleadin, you know
+        a,
+        /* and this other comment is missleading too, because, you know
+        commas, and, all
+        */
+        b
+      ) {
+        return true
+      }
+      expect(getNRelevantArgs(withAnnoyingComments)).toBe(2)
+
+      function withDefaults(a, b = 1, c, d = 3) {
+        return a + b + c + d
+      }
+      expect(getNRelevantArgs(withDefaults)).toBe(4)
     })
   })
 })
