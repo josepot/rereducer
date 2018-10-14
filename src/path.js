@@ -17,14 +17,8 @@ const pathReducer = isInner => {
     const getCurrentValue = createReducer([getters, getState], path)
     const fn = reducer =>
       createReducer(
-        [
-          getCurrentValue,
-          enhancer(reducer, getCurrentValue),
-          getState,
-          getters
-        ],
-        (oldVal, newVal, state, route) =>
-          oldVal === newVal ? state : assocPath(route, newVal, state)
+        [getters, enhancer(reducer, getCurrentValue), getState],
+        assocPath
       )
     return arguments.length === 1 ? fn : fn(arguments[1])
   }
