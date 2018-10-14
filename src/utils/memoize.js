@@ -16,7 +16,7 @@ function cleanArgsStr(str) {
   )
 }
 
-function getNRelevantArgs(fn) {
+export function getNRelevantArgs(fn) {
   const str = cleanArgsStr(fn.toString())
   if (str.startsWith('function') && str.match(/\W(arguments)\W/))
     return Infinity
