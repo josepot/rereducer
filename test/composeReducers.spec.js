@@ -16,7 +16,7 @@ describe('composeReducers', () => {
   })
 
   test('when invoked with 1 function as a parameter it returns that function', () => {
-    const testFn = () => null;
+    const testFn = () => null
     const reducer = composeReducers(testFn)
     expect(reducer).toBe(testFn)
   })
