@@ -1,5 +1,5 @@
 import rereducer from "rereducer";
-import { State, Action, Action1, Action2, ActionType, initialState } from 'storeTypes';
+import { Action, Action1, Action2, ActionType, initialState, State } from 'storeTypes';
 
 const myGenericReducer = (state: State, action: Action) => state;
 const myAction1Reducer = (state: State, action: Action1) => state;
