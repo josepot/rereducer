@@ -1,4 +1,4 @@
-import { assocReducer, mergeReducer, concatReducer, subReducer } from "rereducer";
+import { outerReducer, merge, concat, innerReducer } from "rereducer";
 import { State, Entity, Action } from "storeTypes";
 
 (() => { /// assocReducer
@@ -10,8 +10,8 @@ import { State, Entity, Action } from "storeTypes";
   });
 
   // $ExpectType Reducer<{ [key: string]: Entity; }, Action>
-  const withTemplate = assocReducer<Entity, MapState, Action>(
-    keyGetter,
+  const withTemplate = outerReducer<Entity, MapState, Action>(
+    [keyGetter],
     {
       id: keyGetter,
       text: 'foo'
@@ -19,13 +19,13 @@ import { State, Entity, Action } from "storeTypes";
   );
 
   // $ExpectType Reducer<{ [key: string]: Entity; }, Action>
-  const withGetter = assocReducer<Entity, MapState, Action>(
-    keyGetter,
+  const withGetter = outerReducer<Entity, MapState, Action>(
+    [keyGetter],
     templateGetter
   );
 
-  const withIncompleteTemplate = assocReducer<Entity, MapState, Action>(
-    keyGetter,
+  const withIncompleteTemplate = outerReducer<Entity, MapState, Action>(
+    [keyGetter],
     // $ExpectError
     {
       id: keyGetter
@@ -33,18 +33,18 @@ import { State, Entity, Action } from "storeTypes";
   );
 });
 
-(() => { // subReducer
+(() => { // innerReducer
   const getPath = (state: State, action: Action) => 'foo';
   const reducer = (state: State, action: Action) => 'bar';
 
   // $ExpectType Reducer<State, Action>
-  const withStaticPath = subReducer<State, Action>('foo', reducer);
+  const withStaticPath = innerReducer<State, Action>(['foo'], reducer);
 
   // $ExpectType Reducer<State, Action>
-  const withGetter = subReducer<State, Action>(getPath, reducer);
+  const withGetter = innerReducer<State, Action>([getPath], reducer);
 
   // $ExpectType Reducer<State, Action>
-  const withBoth = subReducer<State, Action>([getPath, 'bar'], reducer);
+  const withBoth = innerReducer<State, Action>([getPath, 'bar'], reducer);
 });
 
 (() => { /// mergeReducer
@@ -54,20 +54,20 @@ import { State, Entity, Action } from "storeTypes";
   }
 
   // $ExpectType Reducer<MergeState, Action>
-  const identity = mergeReducer<MergeState, Action>({});
+  const identity = merge<MergeState, Action>({});
 
   // $ExpectType Reducer<MergeState, Action>
-  const partial = mergeReducer<MergeState, Action>({
+  const partial = merge<MergeState, Action>({
     bar: 'baz'
   });
 
-  const partialFail = mergeReducer<MergeState, Action>({
+  const partialFail = merge<MergeState, Action>({
     // $ExpectError
     fail: true
   });
 
   // $ExpectType Reducer<MergeState, Action>
-  const getter = mergeReducer((state: MergeState, action: Action) => ({
+  const getter = merge((state: MergeState, action: Action) => ({
     foo: 3
   }));
 });
@@ -76,14 +76,14 @@ import { State, Entity, Action } from "storeTypes";
   type ConcatState = string[];
 
   // $ExpectType Reducer<string[], Action>
-  const identityArray = concatReducer<ConcatState, Action>(() => []);
+  const identityArray = concat<ConcatState, Action>(() => []);
 
   // $ExpectType Reducer<string[], Action>
-  const arrayConcat = concatReducer<ConcatState, Action>(() => ['foo']);
+  const arrayConcat = concat<ConcatState, Action>(() => ['foo']);
 
   // $ExpectError
-  const arrayConcatFail = concatReducer<ConcatState, Action>(() => [3]);
+  const arrayConcatFail = concat<ConcatState, Action>(() => [3]);
 
   // $ExpectType Reducer<string, Action>
-  const stringConcat = concatReducer<string, Action>(() => 'foo');
+  const stringConcat = concat<string, Action>(() => 'foo');
 });

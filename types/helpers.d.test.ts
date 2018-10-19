@@ -1,4 +1,4 @@
-import { isType, payload } from "rereducer";
+import { isType, fromPayload } from "rereducer";
 import { Action, ActionType } from "storeTypes";
 
 (() => { /// isType
@@ -16,5 +16,5 @@ import { Action, ActionType } from "storeTypes";
 
 (() => { /// payload
   // $ExpectType ReducerLikeFunction<any, ActionWithPayload<any>, any>
-  const basicPayload = payload('foo', 'bar');
+  const basicPayload = fromPayload('foo', 'bar');
 });
