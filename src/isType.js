@@ -1,3 +1,1 @@
-import { flagMemoized } from './utils/index'
-
-export default x => flagMemoized((s, { type }) => type === x)
+export default x => (s, a) => x === a.type

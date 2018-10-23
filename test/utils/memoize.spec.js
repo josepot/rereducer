@@ -3,9 +3,9 @@ import {
   isMemoized,
   memoizeExternalReducer,
   memoizeTemplateReducer,
-  customMemoized
+  getNRelevantArgs
 } from '../../src/utils/memoize'
-import { payload } from '../../src'
+import { fromPayload } from '../../src'
 
 const inc = x => x + 1
 
@@ -66,11 +66,16 @@ describe('memoize', () => {
       expect(result).toBe(3)
       expect(counter).toBe(2)
     })
+
+    it('does not memoize an external reducer more than once', () => {
+      const rememoized = memoizeExternalReducer(memoized)
+      expect(rememoized).toBe(memoized)
+    })
   })
 
   describe('template reducers', () => {
     it('memoizes Array template reducers', () => {
-      const template = memoizeTemplateReducer([inc, payload('text')])
+      const template = memoizeTemplateReducer([inc, fromPayload('text')])
 
       const result1 = template(1, { payload: { text: 'hello' } })
       const result2 = template(1, { payload: { text: 'hello' } })
@@ -80,7 +85,10 @@ describe('memoize', () => {
     })
 
     it('memoizes Object template reducers', () => {
-      const template = memoizeTemplateReducer({ x: inc, text: payload('text') })
+      const template = memoizeTemplateReducer({
+        x: inc,
+        text: fromPayload('text')
+      })
 
       const result1 = template(1, { payload: { text: 'hello' } })
       const result2 = template(1, { payload: { text: 'hello' } })
@@ -90,47 +98,40 @@ describe('memoize', () => {
     })
   })
 
-  describe('customMemoized', () => {
-    let counter
-    let memoized
-    beforeEach(() => {
-      counter = 0
+  describe('getNRelevantArgs', () => {
+    it('returns Infinity for functions that use `arguments`', () => {
+      const input = function() {
+        return arguments
+      }
+      expect(getNRelevantArgs(input)).toBe(Infinity)
     })
 
-    it('memoizes the latests results of the given args', () => {
-      memoized = customMemoized(
-        (s, action) => [s, action.payload],
-        (...args) => {
-          counter++
-          return args
-        }
-      )
-      expect(counter).toBe(0)
-      const output1 = memoized('foo', { payload: 'bar' })
-      expect(output1).toEqual(['foo', 'bar'])
-      expect(counter).toBe(1)
-      const output2 = memoized('foo', { payload: 'bar' })
-      expect(counter).toBe(1)
-      expect(output2).toBe(output1)
+    it('returns Infinity for functions that use the spread operator', () => {
+      const input = {
+        toString: () => '(a, b, ...args) => args'
+      }
+      expect(getNRelevantArgs(input)).toBe(Infinity)
     })
 
-    it('does not memoize the extra args', () => {
-      memoized = customMemoized(
-        (s, action) => [s, action.payload],
-        (...args) => [args],
-        (...args) => {
-          counter++
-          return args
-        }
-      )
+    it('returns the real number of args for the rest of functions', () => {
+      expect(getNRelevantArgs((a, b, c) => c)).toBe(3)
 
-      expect(counter).toBe(0)
-      const params = ['foo', { payload: 'bar' }]
-      const output1 = memoized(...params)
-      expect(output1).toEqual(['foo', 'bar', params])
-      const output2 = memoized('foo', { payload: 'bar' }, 'whatever')
-      expect(counter).toBe(1)
-      expect(output2).toBe(output1)
+      function withAnnoyingComments(
+        // this comment is missleadin, you know
+        a,
+        /* and this other comment is missleading too, because, you know
+        commas, and, all
+        */
+        b
+      ) {
+        return true
+      }
+      expect(getNRelevantArgs(withAnnoyingComments)).toBe(2)
+
+      function withDefaults(a, b = 1, c, d = 3) {
+        return a + b + c + d
+      }
+      expect(getNRelevantArgs(withDefaults)).toBe(4)
     })
   })
 })

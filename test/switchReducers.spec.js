@@ -1,10 +1,10 @@
 import expect from 'expect'
-import rereducer, { getPayload } from '../src/'
+import { switchReducers, fromAction } from '../src/'
 
-describe('Rereducer', () => {
+describe('switchReducers', () => {
   describe('patterns', () => {
     it('should accept string patterns', () => {
-      const reducer = rereducer(
+      const reducer = switchReducers(
         0,
         ['INCREASE', x => x + 1],
         ['DECREASE', x => x - 1]
@@ -17,7 +17,7 @@ describe('Rereducer', () => {
     it('should accept function patterns', () => {
       const whenIncreaseByFactor = (state, { type, factor }) =>
         type === 'INCREASE' && typeof factor === 'number'
-      const reducer = rereducer(0, [
+      const reducer = switchReducers(0, [
         whenIncreaseByFactor,
         (x, { factor }) => x + factor
       ])
@@ -36,7 +36,10 @@ describe('Rereducer', () => {
       ]
 
       const initialstate = { test: 'test' }
-      const reducer = rereducer(initialstate, [whenItsTimeToReset, () => null])
+      const reducer = switchReducers(initialstate, [
+        whenItsTimeToReset,
+        () => null
+      ])
 
       expect(reducer()).toEqual(initialstate)
       expect(reducer(initialstate, { type: 'INCREASE' })).toEqual(initialstate)
@@ -52,36 +55,32 @@ describe('Rereducer', () => {
     })
   })
 
-  describe('initial value', () => {
-    it('should return a function that takes the initial value when not provided', () => {
-      const initialValue = 5
-      const sillyReducer = rereducer(['INCREASE', x => x + 1])
-
-      expect(sillyReducer(initialValue)).toBeA('function')
-      expect(sillyReducer(initialValue)()).toEqual(initialValue)
-      expect(
-        sillyReducer(initialValue)(initialValue, { type: 'INCREASE' })
-      ).toEqual(6)
+  describe('initial state', () => {
+    it('should throw when initialState is canundefined', () => {
+      expect(() =>
+        switchReducers(undefined, ['INCREASE', x => x + 1])
+      ).toThrow()
+      expect(() => switchReducers(['INCREASE', x => x + 1])).toThrow()
     })
   })
 
   describe('other args propagation', () => {
-    it('if other arguments are passed to the reducer, they should be used', () => {
+    it('if other arguments are passed to the reducer, they should be ignored', () => {
       const subReducer = (state, action, otherState = 0) => state + otherState
-      const reducer = rereducer(0, ['TEST', subReducer])
+      const reducer = switchReducers(0, ['TEST', subReducer])
 
-      expect(reducer(10, { type: 'TEST' }, 100)).toEqual(110)
+      expect(reducer(10, { type: 'TEST' }, 100)).toEqual(10)
     })
   })
 
   describe('arguments assertion', () => {
     it('should throw for bad arguments', () => {
-      const initialstate = 0
-      expect(() => rereducer(initialstate, 23)).toThrow()
-      expect(() => rereducer(initialstate, [undefined, 1])).toThrow()
-      expect(() => rereducer(initialstate, [[], 1])).toThrow()
-      expect(() => rereducer(initialstate, ['asd', 1])).toThrow()
-      expect(() => rereducer(initialstate, ['asd', null])).toThrow()
+      const initialState = 0
+      expect(() => switchReducers(initialState, 23)).toThrow()
+      expect(() => switchReducers(initialState, [undefined, 1])).toThrow()
+      // expect(() => switchReducers(initialState, [[], 1])).toThrow()
+      // expect(() => switchReducers(initialState, ['asd', 1])).toThrow()
+      // expect(() => switchReducers(initialState, ['asd', null])).toThrow()
     })
   })
 
@@ -89,7 +88,10 @@ describe('Rereducer', () => {
     it("should return the action's payload", () => {
       const initialstate = 0
       const payload = 10
-      const reducer = rereducer(initialstate, ['TEST', getPayload])
+      const reducer = switchReducers(initialstate, [
+        'TEST',
+        fromAction(['payload'])
+      ])
 
       expect(reducer(initialstate, { type: 'TEST', payload })).toEqual(payload)
     })

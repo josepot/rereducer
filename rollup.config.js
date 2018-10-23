@@ -9,7 +9,7 @@ export default [
   // CommonJS
   {
     input: 'src/index.js',
-    output: { file: 'lib/rereducer.js', format: 'cjs', exports: 'named', indent: false },
+    output: { file: 'lib/rereducer.js', format: 'cjs', indent: false },
     external: [
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {})
@@ -20,7 +20,7 @@ export default [
   // ES
   {
     input: 'src/index.js',
-    output: { file: 'es/rereducer.js', format: 'es', exports: 'named', indent: false },
+    output: { file: 'es/rereducer.js', format: 'es', indent: false },
     external: [
       ...Object.keys(pkg.dependencies || {}),
       ...Object.keys(pkg.peerDependencies || {})
@@ -31,7 +31,7 @@ export default [
   // ES for Browsers
   {
     input: 'src/index.js',
-    output: { file: 'es/rereducer.mjs', format: 'es', exports: 'named', indent: false },
+    output: { file: 'es/rereducer.mjs', format: 'es', indent: false },
     plugins: [
       nodeResolve({
         jsnext: true
@@ -56,7 +56,6 @@ export default [
     output: {
       file: 'dist/rereducer.js',
       format: 'umd',
-      exports: 'named',
       name: 'Rereducer',
       indent: false
     },
@@ -79,7 +78,6 @@ export default [
     output: {
       file: 'dist/rereducer.min.js',
       format: 'umd',
-      exports: 'named',
       name: 'Rereducer',
       indent: false
     },

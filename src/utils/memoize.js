@@ -16,21 +16,18 @@ function cleanArgsStr(str) {
   )
 }
 
-function getNRelevantArgs(fn) {
-  const str = fn.toString()
+export function getNRelevantArgs(fn) {
+  const str = cleanArgsStr(fn.toString())
   if (str.startsWith('function') && str.match(/\W(arguments)\W/))
     return Infinity
 
-  const argsStr = cleanArgsStr(
-    str.substring(str.indexOf('(') + 1, str.indexOf(')'))
-  )
+  const argsStr = str.substring(str.indexOf('(') + 1, str.indexOf(')'))
 
   if (argsStr.length === 0) return 0
-
   return argsStr.indexOf('...') > -1 ? Infinity : argsStr.split(',').length
 }
 
-function areArgsEqual(prev, next) {
+export function areArgsEqual(prev, next) {
   if (prev === null || next === null || prev.length !== next.length) {
     return false
   }
@@ -50,7 +47,7 @@ export const memoizeExternalReducer = reducer => {
 
   let lastArgs = null
   let lastResult = null
-  const result = function() {
+  return flagMemoized(function() {
     if (arguments.length > nRelevantArgs) {
       arguments.length = nRelevantArgs
     }
@@ -58,8 +55,7 @@ export const memoizeExternalReducer = reducer => {
     lastResult = reducer.apply(null, arguments)
     lastArgs = arguments
     return lastResult
-  }
-  return flagMemoized(result)
+  })
 }
 
 export const memoizeTemplateReducer = template => {
@@ -73,21 +69,5 @@ export const memoizeTemplateReducer = template => {
       if (prevResult[key] !== res[key]) return (prevResult = res)
     }
     return prevResult
-  })
-}
-
-const defaultExtraArgsFn = always([])
-export function customMemoized(argsFn, ...others) {
-  const [extraArgsFn, updaterFn] =
-    others.length === 1 ? [defaultExtraArgsFn, others[0]] : others
-
-  let prevArgs = null
-  let prevResult
-  return flagMemoized(function() {
-    const newArgs = argsFn.apply(null, arguments)
-    if (areArgsEqual(prevArgs, newArgs)) return prevResult
-    prevArgs = newArgs
-    const extraArgs = extraArgsFn.apply(null, arguments)
-    return (prevResult = updaterFn.apply(null, newArgs.concat(extraArgs)))
   })
 }

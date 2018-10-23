@@ -3,13 +3,10 @@ import assoc from './assoc'
 import assocPath from './assocPath'
 import clone from './clone'
 import err from './err'
+import { filter, reject } from './filterReject'
+import isEmpty from './isEmpty'
 import map from './map'
-import {
-  customMemoized,
-  flagMemoized,
-  memoizeExternalReducer,
-  memoizeTemplateReducer
-} from './memoize'
+import { areArgsEqual, flagMemoized } from './memoize'
 import path from './path'
 import registerExternalReducer from './registerExternalReducer'
 import toReducer from './toReducer'
@@ -18,14 +15,15 @@ export {
   always,
   assoc,
   assocPath,
+  areArgsEqual,
   clone,
-  customMemoized,
   err,
+  filter,
   flagMemoized,
+  isEmpty,
   map,
-  memoizeTemplateReducer,
-  memoizeExternalReducer,
-  path,
+  reject,
   registerExternalReducer,
-  toReducer
+  toReducer,
+  path
 }
