@@ -1,6 +1,5 @@
 // TypeScript Version: 3.5
-import { Path } from "./path";
-import { FROM_STATE, FROM_ACTION, FROM_PAYLOAD, FROM_META, FromActionNoArgs, FromStateNoArgs } from "./path";
+import { Path, FROM_STATE, FROM_ACTION, FROM_PAYLOAD, FROM_META, FromActionNoArgs, FromStateNoArgs, InnerReducer, OuterReducer } from "./path";
 
 interface Dictionary<T> {
   [key: string]: T;
@@ -49,18 +48,11 @@ export function switchReducers<TS, TA extends ActionWithType>(
 ): ReducerLikeFunction<TS | undefined, TA, TS>;
 export default switchReducers;
 
-/// assocReducer
-type Getter<TS, TA> = string | ReducerLikeFunction<TS, TA, string>;
-export function outerReducer<TO, TS extends Dictionary<TO>, TA>(
-  getters: Array<Getter<TS, TA>>,
-  reducer: CastableToReducer<TS, TA, TO>
-): Reducer<TS, TA>;
+/// outerReducer
+export declare const outerReducer: OuterReducer;
 
-/// subReducer
-export function innerReducer<TS, TA>(
-  getters: Array<Getter<TS, TA>>,
-  reducer: CastableToReducer<any, TA>
-): Reducer<TS, TA>;
+/// innerReducer
+export declare const innerReducer: InnerReducer;
 
 export function concat<TS extends any[] | string, TA>(
   getter: CastableToReducer<TS, TA>
@@ -180,3 +172,13 @@ export declare const fromPayload: Path<FROM_PAYLOAD>;
 export declare const fromMeta: Path<FROM_META>;
 export declare const getAction: FromActionNoArgs
 export declare const getState: FromStateNoArgs
+
+// TODO
+// composeReducers,
+// createReducer,
+// filter,
+// map,
+// omit,
+// pick,
+// reject,
+// update
