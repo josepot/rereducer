@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "A practical functional library for your redux-like reducers",
+    "tagline": "A small and powerful library for creating declarative reducers",
     "docs": {
       "composeReducers": {
         "title": "composeReducers",
@@ -61,9 +61,15 @@
         "title": "getState",
         "sidebar_label": "getState"
       },
+      "getting-started": {
+        "title": "Getting Started"
+      },
       "innerReducer": {
         "title": "innerReducer",
         "sidebar_label": "innerReducer"
+      },
+      "install": {
+        "title": "Install"
       },
       "isType": {
         "title": "isType",
@@ -103,7 +109,8 @@
       "API": "API"
     },
     "categories": {
-      "Introduction": "Introduction",
+      "About": "About",
+      "Usage": "Usage",
       "API": "API"
     }
   },

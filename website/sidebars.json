@@ -1,6 +1,27 @@
 {
   "docs": {
-    "Introduction": ["doc1", "doc2", "doc3"],
-    "API": ["switchReducers", "exampledoc5"]
+    "About": ["doc1", "doc2", "doc3"],
+    "Usage": ["install", "getting-started"],
+    "API": [
+      "switchReducers",
+      "fromAction",
+      "fromState",
+      "fromPayload",
+      "innerReducer",
+      "outerReducer",
+      "createReducer",
+      "pickFrom",
+      "omitFrom",
+      "concatFrom",
+      "mergeFrom",
+      "mapper",
+      "condMapper",
+      "filter",
+      "reject",
+      "getState",
+      "getAction",
+      "isType",
+      "composeReducers"
+    ]
   }
 }

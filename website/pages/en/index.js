@@ -23,10 +23,6 @@ function docUrl(doc, language) {
   return `${siteConfig.baseUrl}docs/${language ? `${language}/` : ''}${doc}`;
 }
 
-function pageUrl(page, language) {
-  return siteConfig.baseUrl + (language ? `${language}/` : '') + page;
-}
-
 class Button extends React.Component {
   render() {
     return (
@@ -51,14 +47,9 @@ const SplashContainer = props => (
   </div>
 );
 
-const Logo = props => (
-  <div className="projectLogo">
-    <img src={props.img_src} alt="Project Logo" />
-  </div>
-);
-
 const ProjectTitle = () => (
   <h2 className="projectTitle">
+    <img style={{width: 35, height: 35, marginRight: '10px'}} src={imgUrl('rereducer.svg')} alt="Rereducer Logo" />
     {siteConfig.title}
     <small>{siteConfig.tagline}</small>
   </h2>
@@ -77,7 +68,6 @@ class HomeSplash extends React.Component {
     const language = this.props.language || '';
     return (
       <SplashContainer>
-        <Logo img_src={imgUrl('rereducer.svg')} />
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
@@ -104,16 +94,19 @@ const Features = () => (
   <Block layout="fourColumn">
     {[
       {
-        content: 'This is the content of my feature',
-        image: imgUrl('rereducer.svg'),
+        content: '1.8K Gzipped and 4.4K uncompressed',
         imageAlign: 'top',
-        title: 'Feature One',
+        title: 'Small',
       },
       {
-        content: 'The content of my second feature',
-        image: imgUrl('rereducer.svg'),
+        content: 'Enables the creation of declarative point-free reducers. It reduces the amount of boilerplate, while at the same time helps you break down your reducers into smaller functions',
         imageAlign: 'top',
-        title: 'Feature Two',
+        title: 'Functional',
+      },
+      {
+        content: `Does not impose any "right-way" of doing things. It really is up to you how far you want to go with these helpers.`,
+        imageAlign: 'top',
+        title: 'Unopinionated',
       },
     ]}
   </Block>
@@ -159,9 +152,6 @@ const Description = () => (
     {[
       {
         content: 'This is another description of how this project is useful',
-        image: imgUrl('rereducer.svg'),
-        imageAlign: 'right',
-        title: 'Description',
       },
     ]}
   </Block>
@@ -175,8 +165,8 @@ class Index extends React.Component {
       <div>
         <HomeSplash language={language} />
         <div className="mainContainer">
-          <Features />
           <Description />
+          <Features />
         </div>
       </div>
     );

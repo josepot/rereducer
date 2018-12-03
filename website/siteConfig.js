@@ -13,7 +13,7 @@ const users = [];
 
 const siteConfig = {
   title: 'Rereducer', // Title for your website.
-  tagline: 'A practical functional library for your redux-like reducers',
+  tagline: 'A small and powerful library for creating declarative reducers',
   url: 'https://rereducer.js.org', // Your website URL
   baseUrl: '/', // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
@@ -30,7 +30,8 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'doc1', label: 'Introduction'},
-    {doc: 'doc4', label: 'API'}
+    {doc: 'doc4', label: 'API'},
+    {search: true }
   ],
 
   // If you have users set above, you add it here:
@@ -63,7 +64,7 @@ const siteConfig = {
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'default',
+    theme: 'atom-one-dark',
   },
 
   // Add custom scripts here that would be placed in <script> tags.

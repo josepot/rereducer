@@ -8,7 +8,7 @@ An enhancer that helps you separate the logic of your reducer between
 predicates and transformations, enabling reducers to be broken down into
 smaller functions.
 
-```
+```ts
 switchReducers<S, A>(
   initialState: S,
   ...cases: Array<[
@@ -19,10 +19,10 @@ switchReducers<S, A>(
 ```
 
 A `Matcher` can be:
- - A string which will be matched against the the type of the Action. E.g 'INCREMENT'
- - A pseudo-reducer that returns a boolean. E.g. (x, {type}) => x > 1000 && type === 'FOO'
- - An Array of the above E.g. ['LOGOUT', 'RESET', x => x === 1000]
- - An Array of Matchers E.g. [['LOGOUT', ['RESET']], x => x === 1000]
+ - A string which will be matched against the the type of the Action. E.g `'INCREMENT'`
+ - A pseudo-reducer that returns a boolean. E.g. `(x, {type}) => x > 1000 && type === 'FOO'`
+ - An Array of the above E.g. `['LOGOUT', 'RESET', x => x === 1000]`
+ - An Array of Matchers E.g. `[['LOGOUT', ['RESET']], x => x === 1000]`
 
 ## Examples
 
