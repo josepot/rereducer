@@ -1,20 +1,24 @@
-// TypeScript Version: 2.9
+// TypeScript Version: 3.5
 
-type ReducerLikeFunction<TS, TA, TRet> = (state: TS, action: TA, ...others: any[]) => TRet;
+type ReducerLikeFunction<TS, TA, TRet> = (
+  state: TS,
+  action: TA,
+  ...others: any[]
+) => TRet;
 export type Reducer<TS, TA> = (state: TS, action: TA, ...others: any[]) => TS;
 type TemplateType<TS, TA, TO> = {
   [K in keyof TO]: TO[K] | ReducerLikeFunction<TS, TA, TO[K]>
 };
 type CastableToReducer<TS, TA, TO = TS> =
-  ReducerLikeFunction<TS, TA, TO> |
-  TemplateType<TS, TA, TO> |
-  TO;
+  | ReducerLikeFunction<TS, TA, TO>
+  | TemplateType<TS, TA, TO>
+  | TO;
 
 /// switchReducers
 type MatcherFunction<TS, TA> = ReducerLikeFunction<TS, TA, boolean>;
 type AdvancedRuleDef<TS, TA> = [Matcher<TS, TA>, CastableToReducer<TS, TA>];
 type Matcher<TS, TA> = string | MatcherFunction<TS, TA> | MatcherArray<TS, TA>;
-interface MatcherArray<TS, TA> extends Array<Matcher<TS, TA>> { }
+interface MatcherArray<TS, TA> extends Array<Matcher<TS, TA>> {}
 
 type SelectWithType<TA, TAType> = TA extends { type: TAType } ? TA : never;
 interface ActionWithType {
@@ -23,7 +27,9 @@ interface ActionWithType {
 interface ActionWithPayload<P> extends ActionWithType {
   payload: P;
 }
-export type ActionTypeRuleDef<TS, TA extends ActionWithType> = TA extends { type: infer TAType }
+export type ActionTypeRuleDef<TS, TA extends ActionWithType> = TA extends {
+  type: infer TAType;
+}
   ? [TAType, CastableToReducer<TS, SelectWithType<TA, TAType>>]
   : AdvancedRuleDef<TS, TA>;
 
@@ -31,7 +37,10 @@ export type RuleDef<TS, TA extends ActionWithType> =
   | ActionTypeRuleDef<TS, TA>
   | AdvancedRuleDef<TS, TA>;
 
-export function switchReducers<TS, TA extends ActionWithType>(initialValue: TS, ...ruleDefs: Array<RuleDef<TS, TA>>): ReducerLikeFunction<TS | undefined, TA, TS>;
+export function switchReducers<TS, TA extends ActionWithType>(
+  initialValue: TS,
+  ...ruleDefs: Array<RuleDef<TS, TA>>
+): ReducerLikeFunction<TS | undefined, TA, TS>;
 export default switchReducers;
 
 /// assocReducer
@@ -47,14 +56,93 @@ export function innerReducer<TS, TA>(
   reducer: CastableToReducer<any, TA>
 ): Reducer<TS, TA>;
 
-/// concatReducer
-export function concat<TS extends any[] | string, TA>(getter: CastableToReducer<TS, TA>): Reducer<TS, TA>;
+export function concat<TS extends any[] | string, TA>(
+  getter: CastableToReducer<TS, TA>
+): Reducer<TS, TA>;
 
-/// mergeReducer
-export function merge<TS, TA>(reducer: CastableToReducer<TS, TA, Partial<TS>>): Reducer<TS, TA>;
+export function merge<TS, TA>(
+  reducer: CastableToReducer<TS, TA, Partial<TS>>
+): Reducer<TS, TA>;
 
-/// isType
-export function isType<TA extends ActionWithType>(x: TA['type']): MatcherFunction<any, TA>;
+export function isType<TA extends ActionWithType>(
+  x: TA['type']
+): MatcherFunction<any, TA>;
 
-/// payload
-export function fromPayload(...path: string[]): ReducerLikeFunction<any, ActionWithPayload<any>, any>;
+export function fromAction(
+  ...path: string[]
+): ReducerLikeFunction<any, ActionWithPayload<any>, any>;
+
+export function fromPayload(
+  ...path: string[]
+): ReducerLikeFunction<any, ActionWithPayload<any>, any>;
+
+export function fromState(
+  ...path: string[]
+): ReducerLikeFunction<any, ActionWithPayload<any>, any>;
+
+export function getAction<T>(): ReducerLikeFunction<any, T, T>;
+
+export function getState(): Reducer<any, any>;
+
+/// composeReducers
+export function composeReducers<TA, TS, TRet>(
+  reducer1: ReducerLikeFunction<TS, TA, TRet>
+): ReducerLikeFunction<TS, TA, TRet>;
+export function composeReducers<TA, TS, TS1, TRet>(
+  reducer1: ReducerLikeFunction<TS1, TA, TRet>,
+  reducer2: ReducerLikeFunction<TS, TA, TS1>
+): ReducerLikeFunction<TS, TA, TRet>;
+export function composeReducers<TA, TS, TS1, TS2, TRet>(
+  reducer1: ReducerLikeFunction<TS1, TA, TRet>,
+  reducer2: ReducerLikeFunction<TS2, TA, TS1>,
+  reducer3: ReducerLikeFunction<TS, TA, TS2>
+): ReducerLikeFunction<TS, TA, TRet>;
+export function composeReducers<TA, TS, TS1, TS2, TRet>(
+  reducer1: ReducerLikeFunction<TS1, TA, TRet>,
+  reducer2: ReducerLikeFunction<TS2, TA, TS1>,
+  reducer3: ReducerLikeFunction<TS, TA, TS2>
+): ReducerLikeFunction<TS, TA, TRet>;
+export function composeReducers<TA>(
+  ...reducers: Array<ReducerLikeFunction<any, TA, any>>
+): Reducer<any, TA>;
+
+export function filter<T = any>(
+  fn: ReducerLikeFunction<
+    T,
+    any,
+    T extends Array<infer R>
+      ? (value: R, index: number, array: T) => boolean
+      : T extends { [key: string]: infer R }
+        ? (value: R, key: string, target: T) => boolean
+        : never
+  >
+): Reducer<T, any>;
+
+export const reject: typeof filter;
+
+export function map<T = any, TRet = any>(
+  fn: ReducerLikeFunction<
+    T[],
+    any,
+    (value: T, index: number, array: T[]) => TRet
+  >
+): ReducerLikeFunction<T[], any, TRet[]>;
+export function map<T extends { [key: string]: any }>(
+  fn: T extends any[]
+    ? never
+    : ReducerLikeFunction<T, any, (value: any, key: string, object: T) => any>
+): ReducerLikeFunction<T, any, { [P in keyof T]: any }>;
+
+// These two have the problem of partial inference - This would only work if
+// the consumer specifies T, but then we must provide a default for K.... which
+// if we set any/never as default, tsc gets lazy and accepts these for any value of keys.
+// As a workaround, we add an additinal optional parameter which is ignored on runtime.
+export function omit<K extends keyof T, T = any>(
+  keys: K[],
+  stateType?: T
+): ReducerLikeFunction<T, any, Omit<T, K>>;
+
+export function pick<K extends keyof T, T = any>(
+  keys: K[],
+  stateType?: T
+): ReducerLikeFunction<T, any, Pick<T, K>>;
