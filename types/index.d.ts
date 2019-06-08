@@ -146,3 +146,27 @@ export function pick<K extends keyof T, T = any>(
   keys: K[],
   stateType?: T
 ): ReducerLikeFunction<T, any, Pick<T, K>>;
+
+export function createReducer<TS, TA, TP1, TR>(
+  dependencies: [CastableToReducer<TS, TA, TP1>],
+  computeFn: (p1: TP1) => TR
+): ReducerLikeFunction<TS, TA, TR>;
+export function createReducer<TS, TA, TP1, TP2, TR>(
+  dependencies: [
+    CastableToReducer<TS, TA, TP1>,
+    CastableToReducer<TS, TA, TP2>
+  ],
+  computeFn: (p1: TP1, p2: TP2) => TR
+): ReducerLikeFunction<TS, TA, TR>;
+export function createReducer<TS, TA, TP1, TP2, TP3, TR>(
+  dependencies: [
+    CastableToReducer<TS, TA, TP1>,
+    CastableToReducer<TS, TA, TP2>,
+    CastableToReducer<TS, TA, TP3>
+  ],
+  computeFn: (p1: TP1, p2: TP2, p3: TP3) => TR
+): ReducerLikeFunction<TS, TA, TR>;
+export function createReducer<TS, TA, TR>(
+  dependencies: Array<CastableToReducer<TS, TA, any>>,
+  computeFn: (...args: any[]) => TR
+): ReducerLikeFunction<TS, TA, TR>;
