@@ -1,5 +1,9 @@
 // TypeScript Version: 3.5
 
+interface Dictionary<T> {
+  [key: string]: T;
+}
+
 type ReducerLikeFunction<TS, TA, TRet> = (
   state: TS,
   action: TA,
@@ -45,7 +49,7 @@ export default switchReducers;
 
 /// assocReducer
 type Getter<TS, TA> = string | ReducerLikeFunction<TS, TA, string>;
-export function outerReducer<TO, TS extends { [key: string]: TO }, TA>(
+export function outerReducer<TO, TS extends Dictionary<TO>, TA>(
   getters: Array<Getter<TS, TA>>,
   reducer: CastableToReducer<TS, TA, TO>
 ): Reducer<TS, TA>;
@@ -112,7 +116,7 @@ export function filter<T = any>(
     any,
     T extends Array<infer R>
       ? (value: R, index: number, array: T) => boolean
-      : T extends { [key: string]: infer R }
+      : T extends Dictionary<infer R>
         ? (value: R, key: string, target: T) => boolean
         : never
   >
@@ -127,7 +131,7 @@ export function map<T = any, TRet = any>(
     (value: T, index: number, array: T[]) => TRet
   >
 ): ReducerLikeFunction<T[], any, TRet[]>;
-export function map<T extends { [key: string]: any }>(
+export function map<T extends Dictionary<any>>(
   fn: T extends any[]
     ? never
     : ReducerLikeFunction<T, any, (value: any, key: string, object: T) => any>
@@ -170,3 +174,15 @@ export function createReducer<TS, TA, TR>(
   dependencies: Array<CastableToReducer<TS, TA, any>>,
   computeFn: (...args: any[]) => TR
 ): ReducerLikeFunction<TS, TA, TR>;
+
+/// update = condMapper
+export function update<TS, TA>(
+  getCondition: (state: TS[], action: TA) =>
+    (item: TS, key: number) => boolean,
+  mapFn: (item: TS, key: number, array: TS[]) => TS
+): Reducer<TS[], TA>;
+export function update<TS, TA>(
+  getCondition: (state: Dictionary<TS>, action: TA) =>
+    (item: TS, key: string) => boolean,
+  mapFn: (item: TS, key: string, object: Dictionary<TS>) => TS
+): Reducer<Dictionary<TS>, TA>;
