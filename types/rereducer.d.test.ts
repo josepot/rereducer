@@ -43,18 +43,18 @@ const myWatcher = (state: State, action: Action) => true;
 });
 
 (() => { /// Initial value as first parameter
-  // $ExpectType Reducer<State, Action>
+  // $ExpectType ReducerLikeFunction<State | undefined, Action, State>
   const noWatchers = rereducer<State, Action>(
     initialState
   );
 
-  // $ExpectType Reducer<State, Action>
+  // $ExpectType ReducerLikeFunction<State | undefined, Action, State>
   const singleWatcher = rereducer<State, Action>(
     initialState,
     [ActionType.Action1, myAction1Reducer]
   );
 
-  // $ExpectType Reducer<State, Action>
+  // $ExpectType ReducerLikeFunction<State | undefined, Action, State>
   const twoWatchers = rereducer<State, Action>(
     initialState,
     [ActionType.Action1, myAction1Reducer],

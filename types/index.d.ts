@@ -10,7 +10,7 @@ type CastableToReducer<TS, TA, TO = TS> =
   TemplateType<TS, TA, TO> |
   TO;
 
-/// rereducer
+/// switchReducers
 type MatcherFunction<TS, TA> = ReducerLikeFunction<TS, TA, boolean>;
 type AdvancedRuleDef<TS, TA> = [Matcher<TS, TA>, CastableToReducer<TS, TA>];
 type Matcher<TS, TA> = string | MatcherFunction<TS, TA> | MatcherArray<TS, TA>;
@@ -31,7 +31,7 @@ export type RuleDef<TS, TA extends ActionWithType> =
   | ActionTypeRuleDef<TS, TA>
   | AdvancedRuleDef<TS, TA>;
 
-export function switchReducers<TS, TA extends ActionWithType>(initialValue: TS, ...ruleDefs: Array<RuleDef<TS, TA>>): Reducer<TS, TA>;
+export function switchReducers<TS, TA extends ActionWithType>(initialValue: TS, ...ruleDefs: Array<RuleDef<TS, TA>>): ReducerLikeFunction<TS | undefined, TA, TS>;
 export default switchReducers;
 
 /// assocReducer
