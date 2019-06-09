@@ -15,6 +15,44 @@ import { Action, ActionType } from "storeTypes";
 });
 
 (() => { /// payload
-  // $ExpectType ReducerLikeFunction<any, ActionWithPayload<any>, any>
-  const basicPayload = fromPayload('foo', 'bar');
+  const basicPayload = fromPayload(['foo', 'bar']);
+
+  // $ExpectType string
+  const resStr = basicPayload('', {
+    payload: {
+      foo: {
+        bar: 'hey'
+      }
+    }
+  });
+
+  // $ExpectType number
+  const resNum = basicPayload('', {
+    payload: {
+      foo: {
+        bar: 3
+      }
+    }
+  });
+
+  const bar: {
+    [key: string]: number
+  } = {
+    bar: 3
+  };
+  // $ExpectType number | undefined
+  const resEmpty = basicPayload('', {
+    payload: {
+      foo: bar
+    }
+  });
+
+  // $ExpectType never
+  const resNever = basicPayload('', {
+    payload: {
+      baz: {
+        bar: 3
+      }
+    }
+  });
 });
