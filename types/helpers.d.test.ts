@@ -1,4 +1,4 @@
-import { isType, payload } from "rereducer";
+import { isType, fromPayload, fromState } from "rereducer";
 import { Action, ActionType } from "storeTypes";
 
 (() => { /// isType
@@ -14,7 +14,73 @@ import { Action, ActionType } from "storeTypes";
   const unmatchingType = isType<{ payload: any }>("foo");
 });
 
-(() => { /// payload
-  // $ExpectType ReducerLikeFunction<any, ActionWithPayload<any>, any>
-  const basicPayload = payload('foo', 'bar');
+(() => { /// fromPayload
+  const basicPayload = fromPayload(['foo', 'bar']);
+
+  // $ExpectType string
+  const resStr = basicPayload('', {
+    payload: {
+      foo: {
+        bar: 'hey'
+      }
+    }
+  });
+
+  // $ExpectType number
+  const resNum = basicPayload('', {
+    payload: {
+      foo: {
+        bar: 3
+      }
+    }
+  });
+
+  const bar: {
+    [key: string]: number
+  } = {
+    bar: 3
+  };
+  // $ExpectType number | undefined
+  const resEmpty = basicPayload('', {
+    payload: {
+      foo: bar
+    }
+  });
+
+  // $ExpectType never
+  const resNever = basicPayload('', {
+    payload: {
+      baz: {
+        bar: 3
+      }
+    }
+  });
+});
+
+(() => { /// fromState
+  const basicState = fromState(['foo', 'bar']);
+
+  // $ExpectType string
+  const resStr = basicState({
+    foo: {
+      bar: 'hey'
+    }
+  });
+
+  const bar: {
+    [key: string]: number
+  } = {
+    bar: 3
+  };
+  // $ExpectType number | undefined
+  const resEmpty = basicState({
+    foo: bar
+  });
+
+  // $ExpectType never
+  const resNever = basicState({
+    baz: {
+      bar: 3
+    }
+  });
 });

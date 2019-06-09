@@ -1,5 +1,5 @@
 import rereducer from "rereducer";
-import { State, Action, Action1, Action2, ActionType, initialState } from 'storeTypes';
+import { Action, Action1, Action2, ActionType, initialState, State } from 'storeTypes';
 
 const myGenericReducer = (state: State, action: Action) => state;
 const myAction1Reducer = (state: State, action: Action1) => state;
@@ -43,18 +43,18 @@ const myWatcher = (state: State, action: Action) => true;
 });
 
 (() => { /// Initial value as first parameter
-  // $ExpectType Reducer<State, Action>
+  // $ExpectType ReducerLikeFunction<State | undefined, Action, State>
   const noWatchers = rereducer<State, Action>(
     initialState
   );
 
-  // $ExpectType Reducer<State, Action>
+  // $ExpectType ReducerLikeFunction<State | undefined, Action, State>
   const singleWatcher = rereducer<State, Action>(
     initialState,
     [ActionType.Action1, myAction1Reducer]
   );
 
-  // $ExpectType Reducer<State, Action>
+  // $ExpectType ReducerLikeFunction<State | undefined, Action, State>
   const twoWatchers = rereducer<State, Action>(
     initialState,
     [ActionType.Action1, myAction1Reducer],

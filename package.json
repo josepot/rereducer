@@ -54,7 +54,7 @@
     "babel-jest": "^23.6.0",
     "cross-env": "^5.1.4",
     "deep-freeze": "^0.0.1",
-    "dtslint": "^0.3.0",
+    "dtslint": "^0.7.9",
     "eslint": "^5.6.1",
     "eslint-config-react-app": "^3.0.3",
     "eslint-plugin-flowtype": "^2.50.3",
