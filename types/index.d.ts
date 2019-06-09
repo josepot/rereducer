@@ -45,7 +45,6 @@ export function switchReducers<TS, TA extends ActionWithType>(
   initialValue: TS,
   ...ruleDefs: Array<RuleDef<TS, TA>>
 ): ReducerLikeFunction<TS | undefined, TA, TS>;
-export default switchReducers;
 
 /// assocReducer
 type Getter<TS, TA> = string | ReducerLikeFunction<TS, TA, string>;
